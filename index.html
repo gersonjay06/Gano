@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gano Excel International – Automated Business Platform</title>
+<style>
+  :root {
+    --gold: #C8973A;
+    --gold-light: #F0C060;
+    --gold-dark: #8B6520;
+    --brown: #3E1F00;
+    --green: #1a7a3c;
+    --green-light: #27ae60;
+    --red: #c0392b;
+    --bg: #0d0d0d;
+    --bg2: #141414;
+    --bg3: #1e1e1e;
+    --bg4: #252525;
+    --border: #2e2e2e;
+    --text: #f0f0f0;
+    --muted: #888;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+
+  /* ── VIEWS ── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ══════════════════════════════════════════
+     LANDING PAGE
+  ══════════════════════════════════════════ */
+  #landing { min-height: 100vh; }
+
+  .hero {
+    background: linear-gradient(135deg, #0d0d0d 0%, #1a0f00 50%, #0d0d0d 100%);
+    position: relative; overflow: hidden;
+    padding: 0;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(200,151,58,0.18) 0%, transparent 70%);
+  }
+  .hero-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 40px; position: relative; z-index: 10;
+    border-bottom: 1px solid rgba(200,151,58,0.15);
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 44px; height: 44px; background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 900; color: #0d0d0d;
+  }
+  .logo-text { font-size: 20px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
+  .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 8px; }
+  .btn { padding: 10px 22px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; border: none; transition: all .2s; }
+  .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+  .btn-outline:hover { background: rgba(200,151,58,0.1); }
+  .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #0d0d0d; }
+  .btn-gold:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(200,151,58,0.3); }
+  .btn-green { background: linear-gradient(135deg, var(--green-light), var(--green)); color: #fff; }
+  .btn-green:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-red { background: linear-gradient(135deg, #e74c3c, var(--red)); color: #fff; }
+  .btn-sm { padding: 7px 16px; font-size: 12px; }
+  .btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 10px; }
+  .btn-block { width: 100%; }
+
+  .hero-body {
+    text-align: center; padding: 80px 20px 60px;
+    position: relative; z-index: 5;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(200,151,58,0.12); border: 1px solid rgba(200,151,58,0.3);
+    color: var(--gold); padding: 6px 18px; border-radius: 999px; font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .hero-badge span { width: 8px; height: 8px; background: var(--green-light); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+  .hero h1 { font-size: clamp(32px,5vw,62px); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+  .hero h1 span { background: linear-gradient(135deg, var(--gold-light), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero p { font-size: 18px; color: var(--muted); max-width: 560px; margin: 0 auto 36px; line-height: 1.7; }
+  .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  .hero-stats {
+    display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+    padding: 30px 40px; border-top: 1px solid var(--border);
+    position: relative; z-index: 5;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .val { font-size: 28px; font-weight: 800; color: var(--gold); }
+  .hero-stat .lbl { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+  /* Features */
+  .section { padding: 70px 40px; }
+  .section-title { text-align: center; margin-bottom: 50px; }
+  .section-title h2 { font-size: 32px; font-weight: 800; margin-bottom: 10px; }
+  .section-title h2 span { color: var(--gold); }
+  .section-title p { color: var(--muted); font-size: 15px; }
+
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+  .feature-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px; transition: all .3s;
+  }
+  .feature-card:hover { border-color: var(--gold-dark); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,.3); }
+  .feature-icon { font-size: 32px; margin-bottom: 16px; }
+  .feature-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+  .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* Products section */
+  .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+  .product-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 24px; text-align: center; transition: all .3s; position: relative; overflow: hidden;
+  }
+  .product-card.featured { border-color: var(--gold-dark); }
+  .product-card.featured::before { content: 'BEST SELLER'; position: absolute; top: 12px; right: -20px; background: var(--gold); color: #0d0d0d; font-size: 10px; font-weight: 800; padding: 3px 30px; transform: rotate(45deg); }
+  .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,.4); }
+  .product-emoji { font-size: 48px; margin-bottom: 14px; }
+  .product-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .product-card p { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+  .price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 13px; }
+  .price-row .lbl { color: var(--muted); }
+  .price-row .val { font-weight: 700; color: var(--gold); }
+  .price-row .val.srp { color: var(--text); }
+
+  /* Compensation */
+  .comp-table { max-width: 900px; margin: 0 auto; }
+  .comp-row {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 24px; margin-bottom: 10px; transition: all .2s;
+  }
+  .comp-row:hover { border-color: var(--gold-dark); }
+  .level-badge {
+    min-width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: #0d0d0d; font-weight: 800; display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .comp-row .name { flex: 1; font-weight: 600; }
+  .comp-row .pct { color: var(--gold); font-weight: 700; font-size: 18px; }
+  .comp-row .note { color: var(--muted); font-size: 13px; }
+
+  /* ══════════════════════════════════════════
+     MODALS
+  ══════════════════════════════════════════ */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
+    z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 16px;
+    padding: 36px; max-width: 460px; width: 100%; position: relative; animation: slideUp .3s ease;
+  }
+  @keyframes slideUp { from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:none;} }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: var(--bg3); border: none; color: var(--text); width: 32px; height: 32px;
+    border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;
+  }
+  .modal h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .modal p.sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); padding: 10px 14px; font-size: 14px; outline: none; transition: border .2s;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+  .form-row { display: flex; gap: 12px; }
+  .form-row .form-group { flex: 1; }
+  .sponsor-box {
+    background: var(--bg3); border: 1px solid rgba(200,151,58,0.3); border-radius: 8px;
+    padding: 10px 14px; font-size: 13px; color: var(--gold); margin-bottom: 16px;
+  }
+  .sponsor-box strong { color: var(--text); }
+  .divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; color: var(--muted); font-size: 12px; }
+  .divider::before,.divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  /* ══════════════════════════════════════════
+     APP LAYOUT (logged in)
+  ══════════════════════════════════════════ */
+  #app { display: none; height: 100vh; overflow: hidden; }
+  #app.active { display: flex; }
+
+  .sidebar {
+    width: 240px; min-width: 240px; background: var(--bg2); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow-y: auto;
+  }
+  .sidebar-logo {
+    padding: 20px 20px 16px; border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo .logo-text { font-size: 16px; }
+  .sidebar-logo .logo-sub { font-size: 10px; }
+
+  .sidebar-user {
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .user-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px; color: #0d0d0d; flex-shrink: 0;
+  }
+  .user-name { font-weight: 700; font-size: 14px; }
+  .user-id { font-size: 11px; color: var(--muted); }
+
+  .nav-section { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .nav-section-label { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; padding: 0 20px 8px; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 20px; cursor: pointer; transition: all .2s; border-left: 3px solid transparent;
+    font-size: 14px; color: var(--muted); font-weight: 500;
+  }
+  .nav-item:hover { background: var(--bg3); color: var(--text); }
+  .nav-item.active { background: rgba(200,151,58,0.08); color: var(--gold); border-left-color: var(--gold); }
+  .nav-icon { font-size: 18px; width: 20px; text-align: center; }
+
+  .sidebar-footer { padding: 16px 20px; margin-top: auto; border-top: 1px solid var(--border); }
+  .sidebar-bal {
+    background: linear-gradient(135deg, rgba(200,151,58,0.15), rgba(200,151,58,0.05));
+    border: 1px solid rgba(200,151,58,0.25); border-radius: 10px; padding: 14px;
+  }
+  .sidebar-bal .lbl { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .sidebar-bal .amount { font-size: 22px; font-weight: 800; color: var(--gold); }
+  .sidebar-bal .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .main-content { flex: 1; overflow-y: auto; background: var(--bg); }
+  .page-header {
+    padding: 24px 32px 0; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg); position: sticky; top: 0; z-index: 100; padding-bottom: 16px;
+  }
+  .page-header h1 { font-size: 22px; font-weight: 800; }
+  .page-header p { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .header-actions { display: flex; gap: 10px; }
+
+  .page { display: none; padding: 28px 32px; }
+  .page.active { display: block; }
+
+  /* ══════════════════════════════════════════
+     METRIC CARDS
+  ══════════════════════════════════════════ */
+  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .metric-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; position: relative; overflow: hidden; transition: all .3s;
+  }
+  .metric-card:hover { border-color: var(--gold-dark); transform: translateY(-2px); }
+  .metric-card.gold { border-color: rgba(200,151,58,0.4); background: linear-gradient(135deg, rgba(200,151,58,0.08), var(--bg2)); }
+  .metric-label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+  .metric-value { font-size: 26px; font-weight: 800; line-height: 1; }
+  .metric-value.gold { color: var(--gold); }
+  .metric-value.green { color: var(--green-light); }
+  .metric-sub { font-size: 12px; color: var(--muted); margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+  .metric-sub .up { color: var(--green-light); }
+  .metric-sub .down { color: var(--red); }
+  .metric-icon { position: absolute; top: 16px; right: 16px; font-size: 28px; opacity: 0.2; }
+
+  /* ══════════════════════════════════════════
+     CARDS / PANELS
+  ══════════════════════════════════════════ */
+  .card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 18px 22px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-header h3 { font-size: 15px; font-weight: 700; }
+  .card-body { padding: 22px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  @media(max-width:768px){ .two-col{ grid-template-columns:1fr; } }
+
+  /* ══════════════════════════════════════════
+     TABLES
+  ══════════════════════════════════════════ */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead th { padding: 12px 16px; text-align: left; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); }
+  tbody td { padding: 13px 16px; border-bottom: 1px solid var(--border); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--bg3); }
+  .badge {
+    display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700;
+  }
+  .badge-green { background: rgba(39,174,96,0.15); color: var(--green-light); }
+  .badge-gold { background: rgba(200,151,58,0.15); color: var(--gold); }
+  .badge-red { background: rgba(192,57,43,0.15); color: #e74c3c; }
+  .badge-blue { background: rgba(52,152,219,0.15); color: #3498db; }
+  .badge-gray { background: rgba(136,136,136,0.15); color: var(--muted); }
+  .badge-corp { background: rgba(155,89,182,0.15); color: #9b59b6; }
+
+  /* ══════════════════════════════════════════
+     NETWORK TREE
+  ══════════════════════════════════════════ */
+  .network-canvas { overflow-x: auto; padding: 20px; }
+  .tree { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .tree-level { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; padding: 8px 0; position: relative; }
+  .tree-node {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; text-align: center; min-width: 100px; position: relative; transition: all .2s;
+    cursor: pointer;
+  }
+  .tree-node:hover { border-color: var(--gold); transform: scale(1.04); z-index: 5; }
+  .tree-node.you { border-color: var(--gold); background: rgba(200,151,58,0.1); }
+  .tree-node.corp { border-color: #9b59b6; background: rgba(155,89,182,0.08); }
+  .tree-node .n-avatar {
+    width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 6px;
+    background: linear-gradient(135deg, #444, #222);
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .tree-node.you .n-avatar { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); }
+  .tree-node.corp .n-avatar { background: linear-gradient(135deg, #9b59b6, #6c3483); }
+  .tree-node .n-name { font-size: 11px; font-weight: 700; }
+  .tree-node .n-id { font-size: 10px; color: var(--muted); }
+  .tree-connector { height: 24px; width: 2px; background: var(--border); margin: 0 auto; }
+  .level-label {
+    text-align: center; font-size: 11px; color: var(--muted); font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 8px; justify-content: center;
+  }
+  .level-label::before,.level-label::after { content:''; flex:1; max-width:80px; height:1px; background:var(--border); }
+
+  /* ══════════════════════════════════════════
+     CHARTS (pure CSS bar)
+  ══════════════════════════════════════════ */
+  .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 150px; padding: 10px 0 0; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bar { width: 100%; border-radius: 6px 6px 0 0; background: linear-gradient(180deg, var(--gold), var(--gold-dark)); min-height: 4px; transition: height .5s; }
+  .bar-lbl { font-size: 10px; color: var(--muted); }
+  .bar-val { font-size: 11px; font-weight: 700; color: var(--gold); }
+
+  .earning-breakdown { display: flex; flex-direction: column; gap: 12px; }
+  .earn-row { display: flex; align-items: center; gap: 12px; }
+  .earn-label { font-size: 13px; width: 150px; flex-shrink: 0; }
+  .earn-bar-wrap { flex: 1; height: 8px; background: var(--bg3); border-radius: 999px; overflow: hidden; }
+  .earn-bar { height: 100%; border-radius: 999px; }
+  .earn-amount { font-size: 13px; font-weight: 700; width: 80px; text-align: right; }
+
+  /* ══════════════════════════════════════════
+     PAYOUT PAGE
+  ══════════════════════════════════════════ */
+  .payout-channels { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .channel-card {
+    background: var(--bg3); border: 2px solid var(--border); border-radius: 10px;
+    padding: 18px; text-align: center; cursor: pointer; transition: all .2s;
+  }
+  .channel-card:hover, .channel-card.selected { border-color: var(--gold); background: rgba(200,151,58,0.06); }
+  .channel-card .c-icon { font-size: 32px; margin-bottom: 8px; }
+  .channel-card .c-name { font-size: 14px; font-weight: 700; }
+
+  /* ══════════════════════════════════════════
+     TOAST
+  ══════════════════════════════════════════ */
+  .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+  .toast {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 18px; min-width: 260px; display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.5); animation: slideIn .3s ease;
+  }
+  .toast.success { border-color: var(--green-light); }
+  .toast.error { border-color: var(--red); }
+  .toast.info { border-color: var(--gold); }
+  @keyframes slideIn { from{opacity:0;transform:translateX(30px);} to{opacity:1;transform:none;} }
+  .toast-icon { font-size: 20px; }
+  .toast-msg { font-size: 14px; flex: 1; }
+
+  /* REFERRAL LINK */
+  .ref-link-box {
+    background: var(--bg3); border: 1px dashed var(--gold-dark); border-radius: 10px;
+    padding: 14px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer;
+  }
+  .ref-link-box .link { flex: 1; font-size: 13px; color: var(--gold); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ref-link-box .copy-btn { background: var(--gold); color: #0d0d0d; border: none; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+
+  /* LEVEL PROGRESS */
+  .level-progress { display: flex; flex-direction: column; gap: 10px; }
+  .lp-row { display: flex; align-items: center; gap: 12px; }
+  .lp-badge {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: #0d0d0d; font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .lp-bar-wrap { flex: 1; height: 8px; background: var(--bg3); border-radius: 999px; overflow: hidden; }
+  .lp-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-dark)); border-radius: 999px; }
+  .lp-count { font-size: 13px; font-weight: 700; width: 60px; text-align: right; }
+
+  /* ADMIN */
+  .admin-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; overflow-x: auto; }
+  .admin-tab { padding: 12px 20px; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 2px solid transparent; white-space: nowrap; transition: all .2s; }
+  .admin-tab:hover { color: var(--text); }
+  .admin-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .admin-panel { display: none; }
+  .admin-panel.active { display: block; }
+
+  /* MOBILE */
+  .mobile-nav-toggle { display: none; background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; }
+  @media(max-width: 768px) {
+    .sidebar { position: fixed; left: -240px; top: 0; bottom: 0; z-index: 500; transition: left .3s; }
+    .sidebar.open { left: 0; }
+    .mobile-nav-toggle { display: block; }
+    .page { padding: 20px 16px; }
+    .page-header { padding: 16px; }
+    .metrics-grid { grid-template-columns: 1fr 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; background: rgba(200,151,58,0.15); color: var(--gold); margin-right: 4px; }
+
+  .notification-dot { width: 8px; height: 8px; background: var(--red); border-radius: 50%; margin-left: auto; }
+
+  .rank-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: linear-gradient(135deg, rgba(200,151,58,0.2), rgba(200,151,58,0.05));
+    border: 1px solid rgba(200,151,58,0.3); border-radius: 999px;
+    padding: 4px 12px; font-size: 12px; font-weight: 700; color: var(--gold);
+  }
+
+  input[type=range] { accent-color: var(--gold); width: 100%; }
+
+  .welcome-banner {
+    background: linear-gradient(135deg, rgba(200,151,58,0.12), rgba(200,151,58,0.03));
+    border: 1px solid rgba(200,151,58,0.2); border-radius: var(--radius);
+    padding: 20px 24px; margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .welcome-banner h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .welcome-banner p { color: var(--muted); font-size: 13px; }
+
+</style>
+</head>
+<body>
+
+<!-- LANDING PAGE -->
+<div id="landing" class="view active">
+
+  <div class="hero">
+    <nav class="hero-nav">
+      <div class="logo">
+        <div class="logo-icon">G</div>
+        <div>
+          <div class="logo-text">Gano Excel</div>
+          <div class="logo-sub">International</div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <button class="btn btn-outline" onclick="openModal('loginModal')">Log In</button>
+        <button class="btn btn-gold" onclick="openModal('registerModal')">Join Now</button>
+      </div>
+    </nav>
+
+    <div class="hero-body">
+      <div class="hero-badge"><span></span> Live & Accepting Members</div>
+      <h1>Build Your Business.<br><span>Earn Real Income.</span></h1>
+      <p>Join Gano Excel International's automated referral platform — powered by Ganoderma-based wellness products with instant payouts, 7-level commissions, and real-time team tracking.</p>
+      <div class="hero-cta">
+        <button class="btn btn-gold btn-lg" onclick="openModal('registerModal')">🚀 Start Earning Today</button>
+        <button class="btn btn-outline btn-lg" onclick="scrollToSection('products-section')">View Products</button>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val">₱2.4M+</div><div class="lbl">Total Payouts</div></div>
+      <div class="hero-stat"><div class="val">12,400+</div><div class="lbl">Active Members</div></div>
+      <div class="hero-stat"><div class="val">7 Levels</div><div class="lbl">Commission Depth</div></div>
+      <div class="hero-stat"><div class="val">₱200</div><div class="lbl">Min Withdrawal</div></div>
+      <div class="hero-stat"><div class="val">Instant</div><div class="lbl">Payout Processing</div></div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="section" style="background: var(--bg2);">
+    <div class="section-title">
+      <h2>Everything You Need to <span>Succeed</span></h2>
+      <p>A complete automated business platform built for serious network marketers</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <h3>Personalized Referral Links</h3>
+        <p>Your unique link automatically assigns new members under your network with instant sponsorship tracking.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Payout System</h3>
+        <p>Withdraw to GCash, Maya, or Bank Transfer the moment your balance hits ₱200. No waiting, no delays.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>7-Level Network</h3>
+        <p>Earn commissions up to 7 levels deep. Grow your team and watch passive income multiply automatically.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Real-Time Dashboard</h3>
+        <p>Monitor earnings, team growth, pairing bonuses, and payout history — all in one live dashboard.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏢</div>
+        <h3>Transparent Corporate Slots</h3>
+        <p>Company accounts are clearly labeled and visible within the network — full transparency, zero hidden placements.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>Nationwide Dropshipping</h3>
+        <p>Products delivered directly to customers anywhere in the Philippines. No inventory needed.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <div class="section" id="products-section">
+    <div class="section-title">
+      <h2>Product <span>Packages</span></h2>
+      <p>Premium Ganoderma-based wellness products with competitive Distributor and Retail pricing</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-emoji">☕</div>
+        <h3>3-in-1 Coffee</h3>
+        <p>Classic Ganoderma-infused coffee blend. Smooth taste, health benefits.</p>
+        <div class="price-row"><span class="lbl">DP:</span><span class="val">₱350</span></div>
+        <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱450</span></div>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
+      </div>
+      <div class="product-card featured">
+        <div class="product-emoji">🎁</div>
+        <h3>Go Kit Starter</h3>
+        <p>Entry-level business kit. Includes 3 products + business materials + distributor ID.</p>
+        <div class="price-row"><span class="lbl">DP:</span><span class="val">₱1,500</span></div>
+        <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱2,000</span></div>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
+      </div>
+      <div class="product-card">
+        <div class="product-emoji">🍵</div>
+        <h3>Black Coffee</h3>
+        <p>Sugar-free Ganoderma black coffee for health-conscious distributors.</p>
+        <div class="price-row"><span class="lbl">DP:</span><span class="val">₱380</span></div>
+        <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱480</span></div>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
+      </div>
+      <div class="product-card">
+        <div class="product-emoji">🏆</div>
+        <h3>Premium Package</h3>
+        <p>Full distributor package with 6 products + leadership bonus eligibility.</p>
+        <div class="price-row"><span class="lbl">DP:</span><span class="val">₱3,500</span></div>
+        <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱4,500</span></div>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
+      </div>
+      <div class="product-card">
+        <div class="product-emoji">🧪</div>
+        <h3>Ganocafe Mocha</h3>
+        <p>Rich mocha flavor infused with Red Ganoderma extract.</p>
+        <div class="price-row"><span class="lbl">DP:</span><span class="val">₱360</span></div>
+        <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱460</span></div>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
+      </div>
+      <div class="product-card">
+        <div class="product-emoji">💊</div>
+        <h3>Gano Capsules</h3>
+        <p>Pure Ganoderma extract capsules — 90 count, therapeutic-grade.</p>
+        <div class="price-row"><span class="lbl">DP:</span><span class="val">₱900</span></div>
+        <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱1,200</span></div>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compensation Plan -->
+  <div class="section" style="background: var(--bg2);">
+    <div class="section-title">
+      <h2>7-Level <span>Compensation Plan</span></h2>
+      <p>Earn from your entire network down to 7 levels deep</p>
+    </div>
+    <div class="comp-table">
+      <div class="comp-row"><div class="level-badge">1</div><div class="name">Direct Referral</div><div class="pct">20%</div><div class="note">Immediate payout on activation</div></div>
+      <div class="comp-row"><div class="level-badge">2</div><div class="name">Level 2 Unilevel</div><div class="pct">10%</div><div class="note">From your direct team's referrals</div></div>
+      <div class="comp-row"><div class="level-badge">3</div><div class="name">Level 3 Unilevel</div><div class="pct">8%</div><div class="note">Deep network commissions</div></div>
+      <div class="comp-row"><div class="level-badge">4</div><div class="name">Level 4 Unilevel</div><div class="pct">6%</div><div class="note">Passive residual income</div></div>
+      <div class="comp-row"><div class="level-badge">5</div><div class="name">Level 5 Unilevel</div><div class="pct">4%</div><div class="note">Growing network earnings</div></div>
+      <div class="comp-row"><div class="level-badge">6</div><div class="name">Level 6 Unilevel</div><div class="pct">2%</div><div class="note">Extended team rewards</div></div>
+      <div class="comp-row"><div class="level-badge">7</div><div class="name">Level 7 Unilevel</div><div class="pct">1%</div><div class="note">Maximum depth residual</div></div>
+    </div>
+    <div style="text-align:center; margin-top:32px;">
+      <button class="btn btn-gold btn-lg" onclick="openModal('registerModal')">🎯 Join & Start Earning</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: var(--bg2); border-top: 1px solid var(--border); padding: 30px 40px; text-align: center;">
+    <div class="logo" style="justify-content:center; margin-bottom:12px;">
+      <div class="logo-icon">G</div>
+      <div><div class="logo-text">Gano Excel International</div><div class="logo-sub">Independent Distributor Platform</div></div>
+    </div>
+    <p style="color: var(--muted); font-size:13px; max-width:500px; margin:0 auto 10px;">This is an independent distributor platform powered by Gano Excel International products. Always refer to official company guidelines for compliance.</p>
+    <p style="color: var(--muted); font-size:12px;">© 2025 Gano Excel International Distributor System. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════ -->
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+    <h2>Welcome Back 👋</h2>
+    <p class="sub">Sign in to your Gano Excel distributor account</p>
+    <div class="form-group">
+      <label>Member ID or Email</label>
+      <input type="text" id="login-id" placeholder="GEI-XXXXXX or email@example.com">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-pw" placeholder="••••••••">
+    </div>
+    <button class="btn btn-gold btn-block btn-lg" onclick="doLogin()" style="margin-top:8px;">Sign In</button>
+    <div class="divider">or</div>
+    <p style="text-align:center; font-size:14px; color:var(--muted);">New member? <a href="#" onclick="switchModal('loginModal','registerModal')" style="color:var(--gold);">Register here</a></p>
+    <p style="text-align:center; font-size:12px; color:var(--muted); margin-top:8px;"><em>Demo: any credentials work</em></p>
+  </div>
+</div>
+
+<!-- REGISTER MODAL -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal" style="max-width:500px;">
+    <button class="modal-close" onclick="closeModal('registerModal')">×</button>
+    <h2>Create Account 🚀</h2>
+    <p class="sub">Join Gano Excel International as an Independent Distributor</p>
+    <div class="sponsor-box">🔗 Sponsor: <strong id="sponsor-name">CELSO LOZABIA</strong> &nbsp;|&nbsp; ID: <strong id="sponsor-id">GEI-100001</strong></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" id="reg-fname" placeholder="Juan">
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" id="reg-lname" placeholder="Dela Cruz">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="reg-email" placeholder="juan@example.com">
+    </div>
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input type="text" id="reg-mobile" placeholder="09XXXXXXXXX">
+    </div>
+    <div class="form-group">
+      <label>Activation Package</label>
+      <select id="reg-package">
+        <option value="1500">Go Kit Starter — ₱1,500</option>
+        <option value="3500">Premium Package — ₱3,500</option>
+        <option value="500">Entry Package — ₱500</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Payment Method</label>
+      <select id="reg-payment">
+        <option>GCash</option>
+        <option>Maya</option>
+        <option>Bank Transfer</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="reg-pw" placeholder="Create a strong password">
+    </div>
+    <button class="btn btn-gold btn-block btn-lg" onclick="doRegister()" style="margin-top:8px;">✅ Activate Account</button>
+    <p style="text-align:center; font-size:13px; color:var(--muted); margin-top:12px;">Already a member? <a href="#" onclick="switchModal('registerModal','loginModal')" style="color:var(--gold);">Sign in</a></p>
+  </div>
+</div>
+
+<!-- WITHDRAW MODAL -->
+<div class="modal-overlay" id="withdrawModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('withdrawModal')">×</button>
+    <h2>Withdraw Earnings 💸</h2>
+    <p class="sub">Available balance: <strong id="withdraw-balance" style="color:var(--gold);">₱0</strong></p>
+    <div class="form-group">
+      <label>Payout Channel</label>
+      <div class="payout-channels" style="grid-template-columns:repeat(3,1fr); margin-bottom:0;">
+        <div class="channel-card selected" onclick="selectChannel(this,'GCash')">
+          <div class="c-icon">📱</div>
+          <div class="c-name">GCash</div>
+        </div>
+        <div class="channel-card" onclick="selectChannel(this,'Maya')">
+          <div class="c-icon">💜</div>
+          <div class="c-name">Maya</div>
+        </div>
+        <div class="channel-card" onclick="selectChannel(this,'Bank')">
+          <div class="c-icon">🏦</div>
+          <div class="c-name">Bank</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:14px;">
+      <label id="acct-label">GCash Number</label>
+      <input type="text" id="withdraw-acct" placeholder="09XXXXXXXXX">
+    </div>
+    <div class="form-group">
+      <label>Amount (min ₱200)</label>
+      <input type="number" id="withdraw-amount" placeholder="₱200" min="200">
+    </div>
+    <button class="btn btn-green btn-block btn-lg" onclick="doWithdraw()">⚡ Process Payout</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN APP
+══════════════════════════════════════════ -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo">
+        <div class="logo-icon" style="width:36px;height:36px;font-size:18px;">G</div>
+        <div>
+          <div class="logo-text" style="font-size:15px;">Gano Excel</div>
+          <div class="logo-sub">International</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sb-avatar">J</div>
+      <div>
+        <div class="user-name" id="sb-name">Juan Dela Cruz</div>
+        <div class="user-id" id="sb-id">GEI-204891</div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <div class="nav-item active" onclick="showPage('dashboard', this)"><span class="nav-icon">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="showPage('earnings', this)"><span class="nav-icon">💰</span> Earnings</div>
+      <div class="nav-item" onclick="showPage('network', this)"><span class="nav-icon">🌐</span> My Network</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Business</div>
+      <div class="nav-item" onclick="showPage('products', this)"><span class="nav-icon">📦</span> Products</div>
+      <div class="nav-item" onclick="showPage('payout', this)"><span class="nav-icon">💸</span> Payout <div class="notification-dot"></div></div>
+      <div class="nav-item" onclick="showPage('referral', this)"><span class="nav-icon">🔗</span> Referral Link</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">System</div>
+      <div class="nav-item" onclick="showPage('admin', this)"><span class="nav-icon">🏢</span> Admin Panel</div>
+      <div class="nav-item" onclick="showPage('profile', this)"><span class="nav-icon">👤</span> Profile</div>
+      <div class="nav-item" onclick="doLogout()"><span class="nav-icon">🚪</span> Log Out</div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-bal">
+        <div class="lbl">Available Balance</div>
+        <div class="amount" id="sb-balance">₱0.00</div>
+        <div class="sub">⚡ Instant withdrawal available</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 id="page-title">Dashboard</h1>
+        <p id="page-sub">Welcome back! Here's your business overview.</p>
+      </div>
+      <div class="header-actions">
+        <button class="mobile-nav-toggle" onclick="toggleSidebar()">☰</button>
+        <button class="btn btn-gold btn-sm" onclick="openWithdrawModal()">💸 Withdraw</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="welcome-banner">
+        <div>
+          <h2>Good day, <span id="dash-name" style="color:var(--gold);">Juan</span>! 👋</h2>
+          <p>Your network is growing. Keep sharing your referral link!</p>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <span class="rank-badge">⭐ Silver Distributor</span>
+          <span class="rank-badge">🔥 Active</span>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card gold">
+          <div class="metric-icon">💰</div>
+          <div class="metric-label">Total Earnings</div>
+          <div class="metric-value gold" id="m-total">₱12,450</div>
+          <div class="metric-sub"><span class="up">↑ +₱1,200</span> this month</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">💳</div>
+          <div class="metric-label">Available Balance</div>
+          <div class="metric-value green" id="m-balance">₱3,250</div>
+          <div class="metric-sub">Ready to withdraw</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">👥</div>
+          <div class="metric-label">Direct Referrals</div>
+          <div class="metric-value" id="m-refs">8</div>
+          <div class="metric-sub"><span class="up">↑ 2</span> this week</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">🌐</div>
+          <div class="metric-label">Total Network</div>
+          <div class="metric-value" id="m-network">147</div>
+          <div class="metric-sub">across 7 levels</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">🤝</div>
+          <div class="metric-label">Pairing Income</div>
+          <div class="metric-value gold" id="m-pairing">₱4,800</div>
+          <div class="metric-sub">Lifetime earned</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">📦</div>
+          <div class="metric-label">Product Orders</div>
+          <div class="metric-value" id="m-orders">23</div>
+          <div class="metric-sub">total orders placed</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- Earnings Chart -->
+        <div class="card">
+          <div class="card-header"><h3>📈 Monthly Earnings</h3><span style="font-size:12px;color:var(--muted);">Last 6 months</span></div>
+          <div class="card-body">
+            <div class="bar-chart" id="earnings-chart"></div>
+          </div>
+        </div>
+
+        <!-- Income Breakdown -->
+        <div class="card">
+          <div class="card-header"><h3>💡 Income Breakdown</h3><span style="font-size:12px;color:var(--muted);">All time</span></div>
+          <div class="card-body">
+            <div class="earning-breakdown">
+              <div class="earn-row">
+                <div class="earn-label">Direct Referral</div>
+                <div class="earn-bar-wrap"><div class="earn-bar" style="width:65%;background:linear-gradient(90deg,var(--gold),var(--gold-dark));"></div></div>
+                <div class="earn-amount" style="color:var(--gold);">₱4,800</div>
+              </div>
+              <div class="earn-row">
+                <div class="earn-label">Pairing Bonus</div>
+                <div class="earn-bar-wrap"><div class="earn-bar" style="width:45%;background:linear-gradient(90deg,#27ae60,#1a7a3c);"></div></div>
+                <div class="earn-amount" style="color:var(--green-light);">₱3,200</div>
+              </div>
+              <div class="earn-row">
+                <div class="earn-label">Unilevel L2-L7</div>
+                <div class="earn-bar-wrap"><div class="earn-bar" style="width:35%;background:linear-gradient(90deg,#3498db,#1a5276);"></div></div>
+                <div class="earn-amount" style="color:#3498db;">₱2,650</div>
+              </div>
+              <div class="earn-row">
+                <div class="earn-label">Leadership</div>
+                <div class="earn-bar-wrap"><div class="earn-bar" style="width:20%;background:linear-gradient(90deg,#9b59b6,#6c3483);"></div></div>
+                <div class="earn-amount" style="color:#9b59b6;">₱1,800</div>
+              </div>
+              <div class="earn-row">
+                <div class="earn-label">Product Bonus</div>
+                <div class="earn-bar-wrap"><div class="earn-bar" style="width:12%;background:linear-gradient(90deg,#e67e22,#a04000);"></div></div>
+                <div class="earn-amount" style="color:#e67e22;">₱0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="card" style="margin-bottom:24px;">
+        <div class="card-header"><h3>🕐 Recent Transactions</h3><button class="btn btn-outline btn-sm" onclick="showPage('payout', document.querySelector('.nav-item:nth-child(5)'))">View All</button></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Type</th><th>From</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Jun 22, 2025</td><td><span class="tag">Referral</span></td><td>Maria Santos</td><td style="color:var(--green-light);">+₱300</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td>Jun 20, 2025</td><td><span class="tag">Pairing</span></td><td>System</td><td style="color:var(--green-light);">+₱600</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td>Jun 18, 2025</td><td><span class="tag">Unilevel</span></td><td>L2 Network</td><td style="color:var(--green-light);">+₱180</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td>Jun 15, 2025</td><td><span class="tag">Withdrawal</span></td><td>GCash</td><td style="color:var(--red);">-₱2,000</td><td><span class="badge badge-blue">Completed</span></td></tr>
+              <tr><td>Jun 12, 2025</td><td><span class="tag">Referral</span></td><td>Pedro Reyes</td><td style="color:var(--green-light);">+₱300</td><td><span class="badge badge-green">Paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- EARNINGS PAGE -->
+    <div class="page" id="page-earnings">
+      <div class="metrics-grid">
+        <div class="metric-card gold"><div class="metric-icon">💰</div><div class="metric-label">Total Lifetime</div><div class="metric-value gold">₱12,450</div></div>
+        <div class="metric-card"><div class="metric-icon">🤝</div><div class="metric-label">Direct Referral</div><div class="metric-value">₱4,800</div></div>
+        <div class="metric-card"><div class="metric-icon">🔀</div><div class="metric-label">Pairing Bonus</div><div class="metric-value green">₱3,200</div></div>
+        <div class="metric-card"><div class="metric-icon">🌐</div><div class="metric-label">Unilevel (All)</div><div class="metric-value">₱2,650</div></div>
+        <div class="metric-card"><div class="metric-icon">👑</div><div class="metric-label">Leadership</div><div class="metric-value gold">₱1,800</div></div>
+        <div class="metric-card"><div class="metric-icon">💸</div><div class="metric-label">Total Withdrawn</div><div class="metric-value">₱9,200</div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header"><h3>📊 Level-by-Level Earnings</h3></div>
+          <div class="card-body">
+            <div class="level-progress">
+              <div class="lp-row"><div class="lp-badge">1</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;"><span>Direct (20%)</span><span>8 members</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:80%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱4,800</div></div>
+              <div class="lp-row"><div class="lp-badge">2</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;"><span>Level 2 (10%)</span><span>21 members</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:55%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱1,200</div></div>
+              <div class="lp-row"><div class="lp-badge">3</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;"><span>Level 3 (8%)</span><span>34 members</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:40%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱780</div></div>
+              <div class="lp-row"><div class="lp-badge">4</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;"><span>Level 4 (6%)</span><span>42 members</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:30%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱420</div></div>
+              <div class="lp-row"><div class="lp-badge">5</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;"><span>Level 5 (4%)</span><span>28 members</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:20%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱168</div></div>
+              <div class="lp-row"><div class="lp-badge">6</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;"><span>Level 6 (2%)</span><span>14 members</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:12%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱56</div></div>
+              <div class="lp-row"><div class="lp-badge">7</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;"><span>Level 7 (1%)</span><span>0 members</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:0%;"></div></div></div><div class="lp-count" style="color:var(--muted);">₱0</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>🏆 Bonus Milestones</h3></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <div style="font-size:14px;font-weight:700;">🥈 Silver Rank</div>
+                  <span class="badge badge-green">Achieved</span>
+                </div>
+                <div style="font-size:12px;color:var(--muted);">5 direct referrals + ₱5,000 group sales</div>
+              </div>
+              <div style="background:var(--bg3);border:1px solid rgba(200,151,58,0.3);border-radius:8px;padding:14px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <div style="font-size:14px;font-weight:700;">🥇 Gold Rank</div>
+                  <span class="badge badge-gold">In Progress</span>
+                </div>
+                <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">15 direct referrals + ₱20,000 group sales</div>
+                <div class="earn-bar-wrap"><div class="earn-bar" style="width:53%;background:linear-gradient(90deg,var(--gold),var(--gold-dark));"></div></div>
+                <div style="font-size:11px;color:var(--muted);margin-top:4px;">7/15 referrals · ₱10,640/₱20,000</div>
+              </div>
+              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;opacity:0.6;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <div style="font-size:14px;font-weight:700;">💎 Diamond Rank</div>
+                  <span class="badge badge-gray">Locked</span>
+                </div>
+                <div style="font-size:12px;color:var(--muted);">50 direct referrals + ₱100,000 group sales</div>
+              </div>
+              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;opacity:0.6;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <div style="font-size:14px;font-weight:700;">👑 Crown Diamond</div>
+                  <span class="badge badge-gray">Locked</span>
+                </div>
+                <div style="font-size:12px;color:var(--muted);">100 direct referrals + ₱500,000 group sales + leadership pool</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>📋 Full Earnings History</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Type</th><th>Source Member</th><th>Level</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Jun 22</td><td>Direct Referral</td><td>Maria Santos</td><td>L1</td><td style="color:var(--green-light);">+₱300</td><td><span class="badge badge-green">Credited</span></td></tr>
+              <tr><td>Jun 20</td><td>Pairing Bonus</td><td>System Auto</td><td>—</td><td style="color:var(--green-light);">+₱600</td><td><span class="badge badge-green">Credited</span></td></tr>
+              <tr><td>Jun 19</td><td>Unilevel</td><td>Jose Mendoza</td><td>L2</td><td style="color:var(--green-light);">+₱80</td><td><span class="badge badge-green">Credited</span></td></tr>
+              <tr><td>Jun 18</td><td>Unilevel</td><td>Ana Reyes</td><td>L3</td><td style="color:var(--green-light);">+₱60</td><td><span class="badge badge-green">Credited</span></td></tr>
+              <tr><td>Jun 15</td><td>Direct Referral</td><td>Pedro Reyes</td><td>L1</td><td style="color:var(--green-light);">+₱300</td><td><span class="badge badge-green">Credited</span></td></tr>
+              <tr><td>Jun 10</td><td>Leadership Bonus</td><td>Milestone</td><td>—</td><td style="color:var(--green-light);">+₱500</td><td><span class="badge badge-green">Credited</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- NETWORK PAGE -->
+    <div class="page" id="page-network">
+      <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px;">
+        <div class="metric-card"><div class="metric-label">L1 Direct</div><div class="metric-value">8</div></div>
+        <div class="metric-card"><div class="metric-label">L2 Members</div><div class="metric-value">21</div></div>
+        <div class="metric-card"><div class="metric-label">L3 Members</div><div class="metric-value">34</div></div>
+        <div class="metric-card gold"><div class="metric-label">Total Network</div><div class="metric-value gold">147</div></div>
+      </div>
+
+      <div class="card" style="margin-bottom:24px;">
+        <div class="card-header"><h3>🌐 Network Tree View</h3>
+          <div style="display:flex;gap:8px;font-size:12px;">
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;background:var(--bg3);border:1px solid var(--gold);border-radius:3px;display:inline-block;"></span> You</span>
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;background:var(--bg3);border:1px solid #9b59b6;border-radius:3px;display:inline-block;"></span> Corporate</span>
+          </div>
+        </div>
+        <div class="network-canvas">
+          <div class="tree">
+            <div class="tree-node you" style="margin-bottom:0;">
+              <div class="n-avatar">👤</div>
+              <div class="n-name">YOU</div>
+              <div class="n-id">GEI-204891</div>
+            </div>
+            <div class="tree-connector"></div>
+
+            <div class="level-label">Level 1 — 8 Direct Referrals</div>
+            <div class="tree-level">
+              <div class="tree-node"><div class="n-avatar">👤</div><div class="n-name">M. Santos</div><div class="n-id">GEI-205001</div></div>
+              <div class="tree-node"><div class="n-avatar">👤</div><div class="n-name">P. Reyes</div><div class="n-id">GEI-205042</div></div>
+              <div class="tree-node corp"><div class="n-avatar">🏢</div><div class="n-name">Corp Slot</div><div class="n-id" style="color:#9b59b6;">CORP-001</div></div>
+              <div class="tree-node"><div class="n-avatar">👤</div><div class="n-name">J. Cruz</div><div class="n-id">GEI-205120</div></div>
+              <div class="tree-node"><div class="n-avatar">👤</div><div class="n-name">R. Lim</div><div class="n-id">GEI-205180</div></div>
+            </div>
+            <div class="tree-connector"></div>
+
+            <div class="level-label">Level 2 — 21 Members</div>
+            <div class="tree-level">
+              <div class="tree-node"><div class="n-avatar">👤</div><div class="n-name">A. Garcia</div><div class="n-id">GEI-206010</div></div>
+              <div class="tree-node"><div class="n-avatar">👤</div><div class="n-name">B. Torres</div><div class="n-id">GEI-206025</div></div>
+              <div class="tree-node"><div class="n-avatar">👤</div><div class="n-name">C. Bautista</div><div class="n-id">GEI-206040</div></div>
+              <div class="tree-node"><div class="n-avatar">👤</div><div class="n-name">D. Flores</div><div class="n-id">GEI-206055</div></div>
+              <div class="tree-node corp"><div class="n-avatar">🏢</div><div class="n-name">Corp Slot</div><div class="n-id" style="color:#9b59b6;">CORP-002</div></div>
+              <div class="tree-node" style="opacity:0.6;"><div class="n-avatar">👤</div><div class="n-name">+16 more</div><div class="n-id">L2 members</div></div>
+            </div>
+            <div class="tree-connector"></div>
+
+            <div class="level-label">Level 3–7 — 118 Members</div>
+            <div class="tree-level">
+              <div class="tree-node" style="opacity:0.7;"><div class="n-avatar">👥</div><div class="n-name">34 members</div><div class="n-id">Level 3</div></div>
+              <div class="tree-node" style="opacity:0.6;"><div class="n-avatar">👥</div><div class="n-name">42 members</div><div class="n-id">Level 4</div></div>
+              <div class="tree-node" style="opacity:0.5;"><div class="n-avatar">👥</div><div class="n-name">28 members</div><div class="n-id">Level 5</div></div>
+              <div class="tree-node" style="opacity:0.4;"><div class="n-avatar">👥</div><div class="n-name">14 members</div><div class="n-id">Level 6</div></div>
+              <div class="tree-node" style="opacity:0.3;"><div class="n-avatar">👥</div><div class="n-name">0 members</div><div class="n-id">Level 7</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>👥 Direct Referrals</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Member</th><th>ID</th><th>Joined</th><th>Package</th><th>Network</th><th>Status</th><th>Earnings From</th></tr></thead>
+            <tbody>
+              <tr><td>Maria Santos</td><td>GEI-205001</td><td>Jun 10</td><td>Go Kit</td><td>12 downlines</td><td><span class="badge badge-green">Active</span></td><td style="color:var(--gold);">₱480</td></tr>
+              <tr><td>Pedro Reyes</td><td>GEI-205042</td><td>Jun 12</td><td>Premium</td><td>8 downlines</td><td><span class="badge badge-green">Active</span></td><td style="color:var(--gold);">₱700</td></tr>
+              <tr><td>Corp Slot 1</td><td>CORP-001</td><td>Jun 1</td><td>Premium</td><td>24 downlines</td><td><span class="badge badge-corp">Corporate</span></td><td style="color:#9b59b6;">₱1,200</td></tr>
+              <tr><td>Jose Cruz</td><td>GEI-205120</td><td>Jun 14</td><td>Entry</td><td>2 downlines</td><td><span class="badge badge-gold">New</span></td><td style="color:var(--gold);">₱100</td></tr>
+              <tr><td>Rosa Lim</td><td>GEI-205180</td><td>Jun 18</td><td>Go Kit</td><td>4 downlines</td><td><span class="badge badge-green">Active</span></td><td style="color:var(--gold);">₱300</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS PAGE -->
+    <div class="page" id="page-products">
+      <div class="products-grid" style="margin-bottom:24px;">
+        <div class="product-card">
+          <div class="product-emoji">☕</div>
+          <h3>3-in-1 Coffee</h3>
+          <p>Ganoderma-infused coffee blend. Classic taste, health benefits. 30 sachets.</p>
+          <div class="price-row"><span class="lbl">DP Price:</span><span class="val">₱350</span></div>
+          <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱450</span></div>
+          <div class="price-row"><span class="lbl">Your Profit:</span><span class="val">₱100</span></div>
+          <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="orderProduct('3-in-1 Coffee', 350)">Order Now</button>
+        </div>
+        <div class="product-card featured">
+          <div class="product-emoji">🎁</div>
+          <h3>Go Kit Starter</h3>
+          <p>Entry business kit with 3 products, materials & Distributor ID activation.</p>
+          <div class="price-row"><span class="lbl">DP Price:</span><span class="val">₱1,500</span></div>
+          <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱2,000</span></div>
+          <div class="price-row"><span class="lbl">Your Profit:</span><span class="val">₱500</span></div>
+          <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="orderProduct('Go Kit Starter', 1500)">Order Now</button>
+        </div>
+        <div class="product-card">
+          <div class="product-emoji">🍵</div>
+          <h3>Black Coffee</h3>
+          <p>Sugar-free Ganoderma black coffee for health-conscious distributors.</p>
+          <div class="price-row"><span class="lbl">DP Price:</span><span class="val">₱380</span></div>
+          <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱480</span></div>
+          <div class="price-row"><span class="lbl">Your Profit:</span><span class="val">₱100</span></div>
+          <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="orderProduct('Black Coffee', 380)">Order Now</button>
+        </div>
+        <div class="product-card">
+          <div class="product-emoji">🏆</div>
+          <h3>Premium Package</h3>
+          <p>Full distributor kit: 6 products + leadership qualification.</p>
+          <div class="price-row"><span class="lbl">DP Price:</span><span class="val">₱3,500</span></div>
+          <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱4,500</span></div>
+          <div class="price-row"><span class="lbl">Your Profit:</span><span class="val">₱1,000</span></div>
+          <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="orderProduct('Premium Package', 3500)">Order Now</button>
+        </div>
+        <div class="product-card">
+          <div class="product-emoji">🧪</div>
+          <h3>Ganocafe Mocha</h3>
+          <p>Rich mocha flavor with Red Ganoderma extract. 30 sachets.</p>
+          <div class="price-row"><span class="lbl">DP Price:</span><span class="val">₱360</span></div>
+          <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱460</span></div>
+          <div class="price-row"><span class="lbl">Your Profit:</span><span class="val">₱100</span></div>
+          <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="orderProduct('Ganocafe Mocha', 360)">Order Now</button>
+        </div>
+        <div class="product-card">
+          <div class="product-emoji">💊</div>
+          <h3>Gano Capsules</h3>
+          <p>Pure Ganoderma extract — 90 capsules, therapeutic grade.</p>
+          <div class="price-row"><span class="lbl">DP Price:</span><span class="val">₱900</span></div>
+          <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱1,200</span></div>
+          <div class="price-row"><span class="lbl">Your Profit:</span><span class="val">₱300</span></div>
+          <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="orderProduct('Gano Capsules', 900)">Order Now</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>📦 My Product Orders</h3></div>
+        <div class="table-wrap">
+          <table id="orders-table">
+            <thead><tr><th>Order #</th><th>Product</th><th>Date</th><th>Amount</th><th>Delivery</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>#ORD-4891</td><td>Go Kit Starter</td><td>Jun 1, 2025</td><td>₱1,500</td><td>Nationwide DP</td><td><span class="badge badge-green">Delivered</span></td></tr>
+              <tr><td>#ORD-4720</td><td>3-in-1 Coffee</td><td>May 20, 2025</td><td>₱350</td><td>Nationwide DP</td><td><span class="badge badge-green">Delivered</span></td></tr>
+              <tr><td>#ORD-4601</td><td>Gano Capsules</td><td>May 5, 2025</td><td>₱900</td><td>Nationwide DP</td><td><span class="badge badge-green">Delivered</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYOUT PAGE -->
+    <div class="page" id="page-payout">
+      <div class="metrics-grid">
+        <div class="metric-card gold"><div class="metric-icon">💳</div><div class="metric-label">Available</div><div class="metric-value gold" id="pay-avail">₱3,250</div><div class="metric-sub">Ready to withdraw</div></div>
+        <div class="metric-card"><div class="metric-icon">⏳</div><div class="metric-label">Pending</div><div class="metric-value">₱0</div><div class="metric-sub">Processing</div></div>
+        <div class="metric-card"><div class="metric-icon">✅</div><div class="metric-label">Total Withdrawn</div><div class="metric-value green">₱9,200</div><div class="metric-sub">All time</div></div>
+        <div class="metric-card"><div class="metric-icon">🔢</div><div class="metric-label">Transactions</div><div class="metric-value">14</div><div class="metric-sub">Lifetime</div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header"><h3>💸 Request Withdrawal</h3></div>
+          <div class="card-body">
+            <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Minimum withdrawal: <strong style="color:var(--gold);">₱200</strong>. Instant processing via your chosen channel.</p>
+            <div class="payout-channels" id="channel-selector">
+              <div class="channel-card selected" onclick="selectChannel(this,'GCash')"><div class="c-icon">📱</div><div class="c-name">GCash</div></div>
+              <div class="channel-card" onclick="selectChannel(this,'Maya')"><div class="c-icon">💜</div><div class="c-name">Maya</div></div>
+              <div class="channel-card" onclick="selectChannel(this,'Bank')"><div class="c-icon">🏦</div><div class="c-name">Bank Transfer</div></div>
+            </div>
+            <div class="form-group">
+              <label id="inline-acct-label">GCash Number</label>
+              <input type="text" id="inline-acct" placeholder="09XXXXXXXXX">
+            </div>
+            <div class="form-group">
+              <label>Withdrawal Amount</label>
+              <input type="number" id="inline-amount" placeholder="₱200 minimum" min="200">
+            </div>
+            <button class="btn btn-green btn-block btn-lg" onclick="doInlineWithdraw()">⚡ Request Payout</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>📊 Payout Status</h3></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:12px;" id="payout-status-list">
+              <div style="background:var(--bg3);border-radius:8px;padding:14px;border:1px solid var(--border);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <div style="font-weight:700;font-size:14px;">₱2,000</div>
+                  <span class="badge badge-blue">Completed</span>
+                </div>
+                <div style="font-size:12px;color:var(--muted);">GCash · Jun 15, 2025 · Ref: GCH-88291</div>
+              </div>
+              <div style="background:var(--bg3);border-radius:8px;padding:14px;border:1px solid var(--border);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <div style="font-weight:700;font-size:14px;">₱3,500</div>
+                  <span class="badge badge-blue">Completed</span>
+                </div>
+                <div style="font-size:12px;color:var(--muted);">Maya · May 28, 2025 · Ref: MAY-44102</div>
+              </div>
+              <div style="background:var(--bg3);border-radius:8px;padding:14px;border:1px solid var(--border);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <div style="font-weight:700;font-size:14px;">₱1,200</div>
+                  <span class="badge badge-blue">Completed</span>
+                </div>
+                <div style="font-size:12px;color:var(--muted);">Bank Transfer · May 10, 2025 · Ref: BNK-33015</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>📋 Full Payout History</h3></div>
+        <div class="table-wrap">
+          <table id="payout-table">
+            <thead><tr><th>Ref #</th><th>Date</th><th>Channel</th><th>Account</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>GCH-88291</td><td>Jun 15, 2025</td><td>GCash</td><td>09XX XXX 4892</td><td style="color:var(--red);">₱2,000</td><td><span class="badge badge-blue">Completed</span></td></tr>
+              <tr><td>MAY-44102</td><td>May 28, 2025</td><td>Maya</td><td>09XX XXX 4892</td><td style="color:var(--red);">₱3,500</td><td><span class="badge badge-blue">Completed</span></td></tr>
+              <tr><td>BNK-33015</td><td>May 10, 2025</td><td>BDO Bank</td><td>****-8821</td><td style="color:var(--red);">₱1,200</td><td><span class="badge badge-blue">Completed</span></td></tr>
+              <tr><td>GCH-77104</td><td>Apr 22, 2025</td><td>GCash</td><td>09XX XXX 4892</td><td style="color:var(--red);">₱2,500</td><td><span class="badge badge-blue">Completed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REFERRAL PAGE -->
+    <div class="page" id="page-referral">
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header"><h3>🔗 Your Referral Link</h3></div>
+          <div class="card-body">
+            <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">Share your unique link. Anyone who registers through it is automatically placed under you.</p>
+            <div class="ref-link-box" id="ref-link-box">
+              <div class="link" id="ref-link-display">https://gei-platform.com/ref/GEI-204891</div>
+              <button class="copy-btn" onclick="copyRefLink()">📋 Copy</button>
+            </div>
+            <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-outline btn-sm" onclick="shareLink('facebook')">📘 Facebook</button>
+              <button class="btn btn-outline btn-sm" onclick="shareLink('messenger')">💬 Messenger</button>
+              <button class="btn btn-outline btn-sm" onclick="shareLink('viber')">📲 Viber</button>
+              <button class="btn btn-outline btn-sm" onclick="shareLink('whatsapp')">📱 WhatsApp</button>
+              <button class="btn btn-outline btn-sm" onclick="shareLink('telegram')">✈️ Telegram</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>📊 Referral Stats</h3></div>
+          <div class="card-body">
+            <div class="metrics-grid" style="grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0;">
+              <div class="metric-card" style="padding:14px;"><div class="metric-label">Link Clicks</div><div class="metric-value" style="font-size:20px;">284</div><div class="metric-sub"><span class="up">↑ 12%</span></div></div>
+              <div class="metric-card" style="padding:14px;"><div class="metric-label">Registrations</div><div class="metric-value" style="font-size:20px;">8</div><div class="metric-sub">Conversion 2.8%</div></div>
+              <div class="metric-card gold" style="padding:14px;"><div class="metric-label">Commission</div><div class="metric-value gold" style="font-size:20px;">₱4,800</div></div>
+              <div class="metric-card" style="padding:14px;"><div class="metric-label">Avg per Referral</div><div class="metric-value" style="font-size:20px;">₱600</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:24px;">
+        <div class="card-header"><h3>💡 Referral Tips</h3></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+            <div style="background:var(--bg3);border-radius:8px;padding:16px;">
+              <div style="font-size:24px;margin-bottom:8px;">📢</div>
+              <div style="font-weight:700;margin-bottom:6px;">Post on Social Media</div>
+              <div style="font-size:13px;color:var(--muted);">Share your link on Facebook, Instagram, and TikTok for maximum reach.</div>
+            </div>
+            <div style="background:var(--bg3);border-radius:8px;padding:16px;">
+              <div style="font-size:24px;margin-bottom:8px;">👨‍👩‍👧‍👦</div>
+              <div style="font-weight:700;margin-bottom:6px;">Start with Family</div>
+              <div style="font-size:13px;color:var(--muted);">Your closest network is the most receptive. Share the opportunity first.</div>
+            </div>
+            <div style="background:var(--bg3);border-radius:8px;padding:16px;">
+              <div style="font-size:24px;margin-bottom:8px;">🎯</div>
+              <div style="font-weight:700;margin-bottom:6px;">Target Health-Conscious</div>
+              <div style="font-size:13px;color:var(--muted);">Ganoderma products appeal to wellness-focused individuals.</div>
+            </div>
+            <div style="background:var(--bg3);border-radius:8px;padding:16px;">
+              <div style="font-size:24px;margin-bottom:8px;">💬</div>
+              <div style="font-weight:700;margin-bottom:6px;">Personal Message</div>
+              <div style="font-size:13px;color:var(--muted);">A personal invite converts 5× better than generic posts.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN PAGE -->
+    <div class="page" id="page-admin">
+      <div style="background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#9b59b6;">
+        🏢 <strong>Administrator Panel</strong> — Full system control. Changes here affect all members.
+      </div>
+
+      <div class="admin-tabs">
+        <div class="admin-tab active" onclick="showAdminTab('members', this)">👥 Members</div>
+        <div class="admin-tab" onclick="showAdminTab('payouts', this)">💸 Payouts</div>
+        <div class="admin-tab" onclick="showAdminTab('products', this)">📦 Products</div>
+        <div class="admin-tab" onclick="showAdminTab('commissions', this)">⚙️ Commissions</div>
+        <div class="admin-tab" onclick="showAdminTab('network', this)">🌐 Network</div>
+        <div class="admin-tab" onclick="showAdminTab('reports', this)">📊 Reports</div>
+        <div class="admin-tab" onclick="showAdminTab('audit', this)">🔍 Audit Log</div>
+      </div>
+
+      <!-- Members -->
+      <div class="admin-panel active" id="admin-members">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;gap:10px;">
+            <input type="text" placeholder="Search members..." style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-size:14px;width:220px;">
+            <select style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-size:14px;">
+              <option>All Status</option><option>Active</option><option>Inactive</option><option>Pending</option>
+            </select>
+          </div>
+          <button class="btn btn-gold btn-sm">+ Add Member</button>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px;">
+          <div class="metric-card"><div class="metric-label">Total Members</div><div class="metric-value">12,418</div></div>
+          <div class="metric-card"><div class="metric-label">Active</div><div class="metric-value green">10,892</div></div>
+          <div class="metric-card"><div class="metric-label">New This Month</div><div class="metric-value gold">284</div></div>
+          <div class="metric-card"><div class="metric-label">Corporate Slots</div><div class="metric-value" style="color:#9b59b6;">12</div></div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Member ID</th><th>Name</th><th>Sponsor</th><th>Package</th><th>Balance</th><th>Network</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td>GEI-100001</td><td>Celso Lozabia</td><td>— (Top)</td><td>Premium</td><td>₱45,200</td><td>2,841</td><td><span class="badge badge-green">Active</span></td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+                <tr><td>GEI-204891</td><td>Juan Dela Cruz</td><td>GEI-100001</td><td>Go Kit</td><td>₱3,250</td><td>147</td><td><span class="badge badge-green">Active</span></td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+                <tr><td>CORP-001</td><td>Company Slot A</td><td>GEI-100001</td><td>Premium</td><td>—</td><td>580</td><td><span class="badge badge-corp">Corporate</span></td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+                <tr><td>GEI-205001</td><td>Maria Santos</td><td>GEI-204891</td><td>Go Kit</td><td>₱1,800</td><td>12</td><td><span class="badge badge-green">Active</span></td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+                <tr><td>GEI-205042</td><td>Pedro Reyes</td><td>GEI-204891</td><td>Premium</td><td>₱2,400</td><td>8</td><td><span class="badge badge-green">Active</span></td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+                <tr><td>CORP-002</td><td>Company Slot B</td><td>GEI-205001</td><td>Premium</td><td>—</td><td>210</td><td><span class="badge badge-corp">Corporate</span></td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payouts Admin -->
+      <div class="admin-panel" id="admin-payouts">
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px;">
+          <div class="metric-card"><div class="metric-label">Total Paid Out</div><div class="metric-value gold">₱2.4M</div></div>
+          <div class="metric-card"><div class="metric-label">Pending</div><div class="metric-value" style="color:#e67e22;">₱18,200</div></div>
+          <div class="metric-card"><div class="metric-label">Today</div><div class="metric-value green">₱42,500</div></div>
+          <div class="metric-card"><div class="metric-label">Requests</div><div class="metric-value">34</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Pending Withdrawal Requests</h3><button class="btn btn-gold btn-sm" onclick="showToast('All approved!','success')">Approve All</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Member</th><th>Channel</th><th>Account</th><th>Amount</th><th>Requested</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td>Maria Santos</td><td>GCash</td><td>09XX XXX 1234</td><td>₱500</td><td>2 hrs ago</td><td><button class="btn btn-green btn-sm" onclick="showToast('Payout approved!','success')">Approve</button></td></tr>
+                <tr><td>Pedro Reyes</td><td>Maya</td><td>09XX XXX 5678</td><td>₱1,200</td><td>4 hrs ago</td><td><button class="btn btn-green btn-sm" onclick="showToast('Payout approved!','success')">Approve</button></td></tr>
+                <tr><td>Rosa Lim</td><td>Bank</td><td>BDO ****-9102</td><td>₱800</td><td>5 hrs ago</td><td><button class="btn btn-green btn-sm" onclick="showToast('Payout approved!','success')">Approve</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Admin -->
+      <div class="admin-panel" id="admin-products">
+        <div class="card">
+          <div class="card-header"><h3>📦 Product Management</h3><button class="btn btn-gold btn-sm">+ Add Product</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Product</th><th>DP Price</th><th>SRP</th><th>Stock</th><th>Orders</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td>3-in-1 Coffee</td><td>₱350</td><td>₱450</td><td>2,400 boxes</td><td>8,420</td><td><span class="badge badge-green">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                <tr><td>Go Kit Starter</td><td>₱1,500</td><td>₱2,000</td><td>840 kits</td><td>3,201</td><td><span class="badge badge-green">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                <tr><td>Black Coffee</td><td>₱380</td><td>₱480</td><td>1,820 boxes</td><td>5,640</td><td><span class="badge badge-green">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                <tr><td>Premium Package</td><td>₱3,500</td><td>₱4,500</td><td>320 kits</td><td>1,108</td><td><span class="badge badge-green">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                <tr><td>Gano Capsules</td><td>₱900</td><td>₱1,200</td><td>960 btls</td><td>2,840</td><td><span class="badge badge-green">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Commissions Admin -->
+      <div class="admin-panel" id="admin-commissions">
+        <div class="card">
+          <div class="card-header"><h3>⚙️ Commission Configuration</h3><button class="btn btn-gold btn-sm" onclick="showToast('Rates saved!','success')">Save Changes</button></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <div class="form-group"><label>Level 1 – Direct Referral (%)</label><input type="number" value="20" min="0" max="100"></div>
+              <div class="form-group"><label>Level 2 – Unilevel (%)</label><input type="number" value="10" min="0" max="100"></div>
+              <div class="form-group"><label>Level 3 – Unilevel (%)</label><input type="number" value="8" min="0" max="100"></div>
+              <div class="form-group"><label>Level 4 – Unilevel (%)</label><input type="number" value="6" min="0" max="100"></div>
+              <div class="form-group"><label>Level 5 – Unilevel (%)</label><input type="number" value="4" min="0" max="100"></div>
+              <div class="form-group"><label>Level 6 – Unilevel (%)</label><input type="number" value="2" min="0" max="100"></div>
+              <div class="form-group"><label>Level 7 – Unilevel (%)</label><input type="number" value="1" min="0" max="100"></div>
+              <div class="form-group"><label>Minimum Withdrawal Amount (₱)</label><input type="number" value="200" min="0"></div>
+              <div class="form-group"><label>Pairing Bonus per Pair (₱)</label><input type="number" value="600" min="0"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Network Admin -->
+      <div class="admin-panel" id="admin-network">
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px;">
+          <div class="metric-card"><div class="metric-label">Total Network</div><div class="metric-value">12,418</div></div>
+          <div class="metric-card"><div class="metric-label">Corporate Slots</div><div class="metric-value" style="color:#9b59b6;">12</div></div>
+          <div class="metric-card"><div class="metric-label">Max Depth</div><div class="metric-value">7</div></div>
+          <div class="metric-card"><div class="metric-label">Avg per Level</div><div class="metric-value">1,774</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>🏢 Corporate Slot Management</h3><button class="btn btn-gold btn-sm" onclick="showToast('Corporate slot added!','success')">+ Add Corp Slot</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Slot ID</th><th>Label</th><th>Sponsor</th><th>Network Size</th><th>Visible</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td>CORP-001</td><td>Company Slot A</td><td>GEI-100001</td><td>580</td><td><span class="badge badge-green">Yes</span></td><td>Network growth support</td></tr>
+                <tr><td>CORP-002</td><td>Company Slot B</td><td>GEI-205001</td><td>210</td><td><span class="badge badge-green">Yes</span></td><td>Network growth support</td></tr>
+                <tr><td>CORP-003</td><td>Company Slot C</td><td>GEI-206010</td><td>88</td><td><span class="badge badge-green">Yes</span></td><td>Network growth support</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reports Admin -->
+      <div class="admin-panel" id="admin-reports">
+        <div class="metrics-grid" style="margin-bottom:24px;">
+          <div class="metric-card gold"><div class="metric-icon">💰</div><div class="metric-label">Monthly Revenue</div><div class="metric-value gold">₱890,400</div></div>
+          <div class="metric-card"><div class="metric-icon">💸</div><div class="metric-label">Monthly Payouts</div><div class="metric-value">₱412,000</div></div>
+          <div class="metric-card"><div class="metric-icon">👥</div><div class="metric-label">New Members</div><div class="metric-value green">284</div></div>
+          <div class="metric-card"><div class="metric-icon">📦</div><div class="metric-label">Product Orders</div><div class="metric-value">1,842</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>📊 Monthly Performance</h3></div>
+          <div class="card-body">
+            <div class="bar-chart" id="admin-chart"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audit Log Admin -->
+      <div class="admin-panel" id="admin-audit">
+        <div class="card">
+          <div class="card-header"><h3>🔍 System Audit Log</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Details</th><th>IP</th></tr></thead>
+              <tbody>
+                <tr><td>Jun 22, 14:32</td><td>GEI-204891</td><td><span class="badge badge-blue">Login</span></td><td>Successful login</td><td>192.168.1.xx</td></tr>
+                <tr><td>Jun 22, 14:15</td><td>GEI-205001</td><td><span class="badge badge-gold">Withdrawal</span></td><td>₱500 via GCash</td><td>10.0.0.xx</td></tr>
+                <tr><td>Jun 22, 13:45</td><td>ADMIN</td><td><span class="badge badge-corp">Config</span></td><td>Commission rates updated</td><td>admin.local</td></tr>
+                <tr><td>Jun 22, 12:10</td><td>GEI-205042</td><td><span class="badge badge-green">Register</span></td><td>New member registered under GEI-204891</td><td>172.16.x.x</td></tr>
+                <tr><td>Jun 22, 11:30</td><td>SYSTEM</td><td><span class="badge badge-gray">Auto</span></td><td>Pairing bonus calculated & distributed</td><td>system</td></tr>
+                <tr><td>Jun 22, 10:00</td><td>GEI-100001</td><td><span class="badge badge-blue">Login</span></td><td>Admin login</td><td>admin.local</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="page" id="page-profile">
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header"><h3>👤 Profile Information</h3><button class="btn btn-gold btn-sm" onclick="showToast('Profile saved!','success')">Save Changes</button></div>
+          <div class="card-body">
+            <div style="text-align:center;margin-bottom:20px;">
+              <div class="user-avatar" style="width:72px;height:72px;font-size:28px;margin:0 auto 10px;" id="profile-avatar">J</div>
+              <div style="font-size:18px;font-weight:800;" id="profile-name">Juan Dela Cruz</div>
+              <div style="color:var(--muted);font-size:13px;" id="profile-id">GEI-204891</div>
+              <span class="rank-badge" style="margin-top:8px;display:inline-flex;">⭐ Silver Distributor</span>
+            </div>
+            <div class="form-group"><label>First Name</label><input type="text" id="pf-fname" value="Juan"></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="pf-lname" value="Dela Cruz"></div>
+            <div class="form-group"><label>Email</label><input type="email" id="pf-email" value="juan@example.com"></div>
+            <div class="form-group"><label>Mobile</label><input type="text" id="pf-mobile" value="09XX XXX XXXX"></div>
+            <div class="form-group"><label>Address</label><input type="text" id="pf-address" placeholder="City, Province"></div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header"><h3>🏦 Payout Accounts</h3></div>
+            <div class="card-body">
+              <div class="form-group"><label>GCash Number</label><input type="text" placeholder="09XXXXXXXXX"></div>
+              <div class="form-group"><label>Maya Number</label><input type="text" placeholder="09XXXXXXXXX"></div>
+              <div class="form-group"><label>Bank Name</label><input type="text" placeholder="BDO, BPI, Metrobank..."></div>
+              <div class="form-group"><label>Bank Account Number</label><input type="text" placeholder="XXXX-XXXX-XXXX"></div>
+              <button class="btn btn-gold btn-block" onclick="showToast('Payout accounts saved!','success')">Save Accounts</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>🔐 Change Password</h3></div>
+            <div class="card-body">
+              <div class="form-group"><label>Current Password</label><input type="password" placeholder="••••••••"></div>
+              <div class="form-group"><label>New Password</label><input type="password" placeholder="••••••••"></div>
+              <div class="form-group"><label>Confirm Password</label><input type="password" placeholder="••••••••"></div>
+              <button class="btn btn-outline btn-block" onclick="showToast('Password updated!','success')">Update Password</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end main-content -->
+</div><!-- end app -->
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const state = {
+  isLoggedIn: false,
+  user: {
+    firstName: 'Juan', lastName: 'Dela Cruz',
+    id: 'GEI-204891', email: 'juan@example.com',
+    balance: 3250, totalEarnings: 12450,
+  },
+  selectedChannel: 'GCash',
+  orderCount: 3
+};
+
+// ══════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+function switchModal(from, to) {
+  closeModal(from);
+  setTimeout(() => openModal(to), 200);
+}
+
+// ══════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════
+function doLogin() {
+  closeModal('loginModal');
+  showApp();
+}
+function doRegister() {
+  const fn = document.getElementById('reg-fname').value || 'Juan';
+  const ln = document.getElementById('reg-lname').value || 'Dela Cruz';
+  state.user.firstName = fn;
+  state.user.lastName = ln;
+  state.user.id = 'GEI-' + (200000 + Math.floor(Math.random()*10000));
+  closeModal('registerModal');
+  showApp();
+  showToast('Welcome! Your account is now active. 🎉', 'success');
+}
+function doLogout() {
+  document.getElementById('app').classList.remove('active');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('landing').classList.add('active');
+  document.getElementById('landing').style.display = 'block';
+  state.isLoggedIn = false;
+}
+
+function showApp() {
+  state.isLoggedIn = true;
+  document.getElementById('landing').classList.remove('active');
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('app').classList.add('active');
+  updateSidebar();
+  renderCharts();
+}
+
+function updateSidebar() {
+  const u = state.user;
+  const initials = (u.firstName[0] + u.lastName[0]).toUpperCase();
+  document.getElementById('sb-avatar').textContent = initials;
+  document.getElementById('sb-name').textContent = u.firstName + ' ' + u.lastName;
+  document.getElementById('sb-id').textContent = u.id;
+  document.getElementById('sb-balance').textContent = '₱' + u.balance.toLocaleString();
+  document.getElementById('dash-name').textContent = u.firstName;
+  document.getElementById('m-balance').textContent = '₱' + u.balance.toLocaleString();
+  document.getElementById('pay-avail').textContent = '₱' + u.balance.toLocaleString();
+  document.getElementById('withdraw-balance').textContent = '₱' + u.balance.toLocaleString();
+  document.getElementById('profile-avatar').textContent = initials;
+  document.getElementById('profile-name').textContent = u.firstName + ' ' + u.lastName;
+  document.getElementById('profile-id').textContent = u.id;
+  const refLink = 'https://gei-platform.com/ref/' + u.id;
+  document.getElementById('ref-link-display').textContent = refLink;
+  if(document.getElementById('pf-fname')) {
+    document.getElementById('pf-fname').value = u.firstName;
+    document.getElementById('pf-lname').value = u.lastName;
+  }
+}
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if(el) el.classList.add('active');
+
+  const titles = {
+    dashboard: ['Dashboard', 'Welcome back! Here\'s your business overview.'],
+    earnings: ['Earnings', 'Track your income across all bonus types.'],
+    network: ['My Network', 'Visualize and manage your 7-level team.'],
+    products: ['Products', 'Order Ganoderma products and track deliveries.'],
+    payout: ['Payout', 'Withdraw your earnings instantly.'],
+    referral: ['Referral Link', 'Share your link and grow your network.'],
+    admin: ['Admin Panel', 'Manage members, payouts, and system settings.'],
+    profile: ['My Profile', 'Update your personal info and payout accounts.'],
+  };
+  if(titles[name]) {
+    document.getElementById('page-title').textContent = titles[name][0];
+    document.getElementById('page-sub').textContent = titles[name][1];
+  }
+  closeSidebar();
+}
+
+function showAdminTab(name, el) {
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('admin-' + name).classList.add('active');
+  el.classList.add('active');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+// ══════════════════════════════════════════
+// CHARTS
+// ══════════════════════════════════════════
+function renderCharts() {
+  renderBarChart('earnings-chart', [
+    {m:'Jan', v:1200}, {m:'Feb', v:980}, {m:'Mar', v:1800}, {m:'Apr', v:2200}, {m:'May', v:2800}, {m:'Jun', v:3470}
+  ]);
+  renderBarChart('admin-chart', [
+    {m:'Jan', v:620000}, {m:'Feb', v:740000}, {m:'Mar', v:810000}, {m:'Apr', v:750000}, {m:'May', v:870000}, {m:'Jun', v:890000}
+  ], true);
+}
+
+function renderBarChart(id, data, large = false) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  const max = Math.max(...data.map(d => d.v));
+  el.innerHTML = data.map(d => {
+    const pct = Math.round((d.v / max) * 130);
+    const label = large ? '₱' + (d.v/1000).toFixed(0) + 'K' : '₱' + d.v.toLocaleString();
+    return `<div class="bar-col">
+      <div class="bar-val">${label}</div>
+      <div class="bar" style="height:${pct}px;"></div>
+      <div class="bar-lbl">${d.m}</div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// PAYOUT / WITHDRAW
+// ══════════════════════════════════════════
+function openWithdrawModal() {
+  document.getElementById('withdraw-balance').textContent = '₱' + state.user.balance.toLocaleString();
+  openModal('withdrawModal');
+}
+
+function selectChannel(el, name) {
+  state.selectedChannel = name;
+  el.closest('.payout-channels') 
+    ? el.closest('.payout-channels').querySelectorAll('.channel-card').forEach(c => c.classList.remove('selected'))
+    : null;
+  const parent = el.parentElement;
+  parent.querySelectorAll('.channel-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  const labels = { GCash: 'GCash Number', Maya: 'Maya Number', Bank: 'Bank Account Number' };
+  ['acct-label','inline-acct-label'].forEach(id => {
+    const l = document.getElementById(id);
+    if(l) l.textContent = labels[name] || name + ' Account';
+  });
+}
+
+function doWithdraw() {
+  const amount = parseFloat(document.getElementById('withdraw-amount').value);
+  processWithdraw(amount, document.getElementById('withdraw-acct').value);
+  closeModal('withdrawModal');
+}
+function doInlineWithdraw() {
+  const amount = parseFloat(document.getElementById('inline-amount').value);
+  processWithdraw(amount, document.getElementById('inline-acct').value);
+}
+
+function processWithdraw(amount, acct) {
+  if(!amount || amount < 200) { showToast('Minimum withdrawal is ₱200', 'error'); return; }
+  if(amount > state.user.balance) { showToast('Insufficient balance', 'error'); return; }
+  if(!acct) { showToast('Please enter your account number', 'error'); return; }
+
+  state.user.balance -= amount;
+  updateSidebar();
+
+  const refNum = state.selectedChannel.substring(0,3).toUpperCase() + '-' + Math.floor(Math.random()*90000+10000);
+  const newRow = `<tr><td>${refNum}</td><td>${new Date().toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'})}</td><td>${state.selectedChannel}</td><td>${acct}</td><td style="color:var(--red);">₱${amount.toLocaleString()}</td><td><span class="badge badge-blue">Completed</span></td></tr>`;
+  const ptable = document.getElementById('payout-table');
+  if(ptable) ptable.querySelector('tbody').insertAdjacentHTML('afterbegin', newRow);
+
+  showToast(`₱${amount.toLocaleString()} sent to ${state.selectedChannel}! Ref: ${refNum} ⚡`, 'success');
+
+  document.getElementById('inline-amount') && (document.getElementById('inline-amount').value = '');
+  document.getElementById('inline-acct') && (document.getElementById('inline-acct').value = '');
+}
+
+// ══════════════════════════════════════════
+// PRODUCTS
+// ══════════════════════════════════════════
+function orderProduct(name, price) {
+  state.orderCount++;
+  const ordNum = '#ORD-' + (4890 + state.orderCount);
+  const newRow = `<tr><td>${ordNum}</td><td>${name}</td><td>${new Date().toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'})}</td><td>₱${price.toLocaleString()}</td><td>Nationwide DP</td><td><span class="badge badge-gold">Processing</span></td></tr>`;
+  const ot = document.getElementById('orders-table');
+  if(ot) ot.querySelector('tbody').insertAdjacentHTML('afterbegin', newRow);
+  showToast(`${name} ordered! Processing your delivery. 📦`, 'success');
+}
+
+// ══════════════════════════════════════════
+// REFERRAL
+// ══════════════════════════════════════════
+function copyRefLink() {
+  const link = document.getElementById('ref-link-display').textContent;
+  navigator.clipboard.writeText(link).then(() => showToast('Referral link copied! 🔗', 'info')).catch(() => showToast('Link: ' + link, 'info'));
+}
+function shareLink(platform) {
+  showToast('Opening ' + platform + ' share...', 'info');
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function showToast(msg, type='info') {
+  const icons = { success:'✅', error:'❌', info:'💡' };
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span class="toast-icon">${icons[type]}</span><span class="toast-msg">${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Auto-fill sponsor from URL param
+const urlParams = new URLSearchParams(window.location.search);
+const refId = urlParams.get('ref');
+if(refId) {
+  const sn = document.getElementById('sponsor-name');
+  const si = document.getElementById('sponsor-id');
+  if(sn) sn.textContent = 'Referral Partner';
+  if(si) si.textContent = refId.toUpperCase();
+}
+
+// Simulate live activity
+setTimeout(() => {
+  if(state.isLoggedIn) showToast('New member joined your Level 1 network! 🎉', 'success');
+}, 8000);
+</script>
+</body>
+</html>
+p
