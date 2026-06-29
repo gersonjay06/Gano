@@ -3,504 +3,1734 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gano Excel – 8-Level Unilevel Compensation</title>
+<title>Gano iTouch – Premium Investment Platform</title>
 <style>
+  /* ─── ROOT VARIABLES ────────────────────── */
   :root {
-    --gold: #C8973A;
-    --gold-light: #F0C060;
-    --gold-dark: #8B6520;
-    --green: #1a7a3c;
-    --green-light: #27ae60;
-    --red: #c0392b;
-    --blue: #2980b9;
-    --purple: #8e44ad;
-    --bg: #0d0d0d;
-    --bg2: #141414;
-    --bg3: #1e1e1e;
-    --bg4: #252525;
-    --border: #2e2e2e;
-    --text: #f0f0f0;
-    --muted: #888;
-    --radius: 12px;
+    /* Primary Colors */
+    --ganoderma-red: #8B0000;
+    --ganoderma-red-light: #A52A2A;
+    --ganoderma-red-dark: #5C0000;
+    --coffee-brown: #4A2C11;
+    --coffee-brown-light: #6B3A1A;
+    --gano-gold: #D4AF37;
+    --gano-gold-light: #E8C84A;
+    --gano-gold-dark: #B8962E;
+    --mint-green: #2E8B57;
+    --mint-green-light: #3CB371;
+    --off-white: #F8F9FA;
+    --off-white-dark: #E9ECEF;
+    
+    /* UI Colors */
+    --bg-primary: #0A0A0A;
+    --bg-secondary: #141414;
+    --bg-card: #1A1A1A;
+    --bg-card-hover: #222222;
+    --bg-input: #1E1E1E;
+    --border-color: #2A2A2A;
+    --text-primary: #F8F9FA;
+    --text-secondary: #B0B0B0;
+    --text-muted: #6C757D;
+    
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, #0A0A0A 0%, var(--ganoderma-red-dark) 40%, var(--coffee-brown) 70%, #0A0A0A 100%);
+    --gradient-gold: linear-gradient(135deg, var(--gano-gold), var(--gano-gold-dark));
+    --gradient-card: linear-gradient(145deg, var(--bg-card), var(--bg-secondary));
+    --gradient-success: linear-gradient(135deg, var(--mint-green), var(--mint-green-light));
+    --gradient-red: linear-gradient(135deg, var(--ganoderma-red), var(--ganoderma-red-dark));
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+    --shadow-gold: 0 0 30px rgba(212,175,55,0.15);
+    --shadow-glow: 0 0 60px rgba(212,175,55,0.08);
+    
+    /* Borders */
+    --border-gold: 1px solid rgba(212,175,55,0.25);
+    --border-red: 1px solid rgba(139,0,0,0.3);
+    
+    /* Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.4s ease;
+    --transition-slow: 0.6s ease;
   }
+
+  /* ─── RESET & BASE ──────────────────────── */
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
 
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg2); }
-  ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+  ::-webkit-scrollbar-thumb { 
+    background: linear-gradient(180deg, var(--gano-gold), var(--gano-gold-dark));
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gano-gold-light); }
 
-  .view { display: none; }
+  /* ─── UTILITY ───────────────────────────── */
+  .view { display: none; animation: fadeIn 0.6s ease; }
   .view.active { display: block; }
 
-  .hero {
-    background: linear-gradient(135deg, #0d0d0d 0%, #1a0f00 50%, #0d0d0d 100%);
-    position: relative; overflow: hidden;
-    padding: 0;
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .hero::before {
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.95); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(212,175,55,0.1); }
+    50% { box-shadow: 0 0 40px rgba(212,175,55,0.25); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .glow-text {
+    text-shadow: 0 0 30px rgba(212,175,55,0.15);
+  }
+
+  .gold-text {
+    color: var(--gano-gold);
+  }
+
+  .gold-border {
+    border-color: var(--gano-gold) !important;
+  }
+
+  .red-border {
+    border-color: var(--ganoderma-red) !important;
+  }
+
+  .glass-effect {
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* ─── BUTTONS ───────────────────────────── */
+  .btn {
+    padding: 12px 28px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .btn::after {
     content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(200,151,58,0.18) 0%, transparent 70%);
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    pointer-events: none;
   }
-  .hero-nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 40px; position: relative; z-index: 10;
-    border-bottom: 1px solid rgba(200,151,58,0.15);
+
+  .btn-gold {
+    background: var(--gradient-gold);
+    color: var(--bg-primary);
+    box-shadow: 0 4px 20px rgba(212,175,55,0.25);
   }
-  .logo { display: flex; align-items: center; gap: 12px; }
-  .logo-icon {
-    width: 44px; height: 44px; background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 22px; font-weight: 900; color: #0d0d0d;
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(212,175,55,0.35);
   }
-  .logo-text { font-size: 20px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
-  .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
-  .nav-links { display: flex; gap: 8px; }
-  .btn { padding: 10px 22px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; border: none; transition: all .2s; }
-  .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-  .btn-outline:hover { background: rgba(200,151,58,0.1); }
-  .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #0d0d0d; }
-  .btn-gold:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(200,151,58,0.3); }
-  .btn-green { background: linear-gradient(135deg, var(--green-light), var(--green)); color: #fff; }
-  .btn-green:hover { opacity: 0.9; transform: translateY(-1px); }
-  .btn-blue { background: linear-gradient(135deg, var(--blue), #1a5276); color: #fff; }
-  .btn-purple { background: linear-gradient(135deg, var(--purple), #6c3483); color: #fff; }
-  .btn-sm { padding: 7px 16px; font-size: 12px; }
-  .btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 10px; }
+
+  .btn-red {
+    background: var(--gradient-red);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(139,0,0,0.3);
+  }
+  .btn-red:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(139,0,0,0.4);
+  }
+
+  .btn-green {
+    background: var(--gradient-success);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(46,139,87,0.25);
+  }
+  .btn-green:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(46,139,87,0.35);
+  }
+
+  .btn-outline-gold {
+    background: transparent;
+    border: 2px solid var(--gano-gold);
+    color: var(--gano-gold);
+  }
+  .btn-outline-gold:hover {
+    background: rgba(212,175,55,0.1);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline-red {
+    background: transparent;
+    border: 2px solid var(--ganoderma-red);
+    color: var(--ganoderma-red-light);
+  }
+  .btn-outline-red:hover {
+    background: rgba(139,0,0,0.1);
+    transform: translateY(-2px);
+  }
+
+  .btn-sm { padding: 8px 18px; font-size: 12px; }
+  .btn-lg { padding: 16px 40px; font-size: 16px; border-radius: var(--radius-md); }
   .btn-block { width: 100%; }
 
+  /* ─── HERO ───────────────────────────────── */
+  .hero {
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(139,0,0,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(74,44,17,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 100%, rgba(212,175,55,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .hero-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    position: relative;
+    z-index: 10;
+    border-bottom: 1px solid rgba(212,175,55,0.1);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--gradient-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--bg-primary);
+    box-shadow: 0 0 30px rgba(212,175,55,0.2);
+    position: relative;
+  }
+
+  .logo-icon::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid rgba(212,175,55,0.3);
+    animation: pulse 3s infinite;
+  }
+
+  .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--gano-gold);
+    letter-spacing: 1px;
+    text-shadow: 0 0 30px rgba(212,175,55,0.1);
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
   .hero-body {
-    text-align: center; padding: 60px 20px 40px;
-    position: relative; z-index: 5;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 5;
   }
+
   .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(200,151,58,0.12); border: 1px solid rgba(200,151,58,0.3);
-    color: var(--gold); padding: 6px 18px; border-radius: 999px; font-size: 13px;
-    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(212,175,55,0.1);
+    border: 1px solid rgba(212,175,55,0.2);
+    color: var(--gano-gold);
+    padding: 8px 24px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+    animation: float 4s ease-in-out infinite;
   }
-  .hero-badge span { width: 8px; height: 8px; background: var(--green-light); border-radius: 50%; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
-  .hero h1 { font-size: clamp(32px,5vw,62px); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
-  .hero h1 span { background: linear-gradient(135deg, var(--gold-light), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero p { font-size: 18px; color: var(--muted); max-width: 560px; margin: 0 auto 36px; line-height: 1.7; }
-  .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  .hero-badge .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--mint-green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+
+  .hero h1 .highlight {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
   .hero-stats {
-    display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
-    padding: 30px 40px; border-top: 1px solid var(--border);
-    position: relative; z-index: 5;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    padding: 30px 40px;
+    border-top: 1px solid rgba(212,175,55,0.1);
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 5;
   }
-  .hero-stat { text-align: center; }
-  .hero-stat .val { font-size: 28px; font-weight: 800; color: var(--gold); }
-  .hero-stat .lbl { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
 
-  .section { padding: 70px 40px; }
-  .section-title { text-align: center; margin-bottom: 50px; }
-  .section-title h2 { font-size: 32px; font-weight: 800; margin-bottom: 10px; }
-  .section-title h2 span { color: var(--gold); }
-  .section-title p { color: var(--muted); font-size: 15px; }
+  .hero-stat {
+    text-align: center;
+  }
 
-  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+  .hero-stat .val {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--gano-gold);
+    text-shadow: 0 0 30px rgba(212,175,55,0.1);
+  }
+
+  .hero-stat .lbl {
+    font-size: 12px;
+    color: var(--text-secondary);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+
+  /* ─── SECTIONS ───────────────────────────── */
+  .section {
+    padding: 80px 40px;
+    position: relative;
+  }
+
+  .section-dark {
+    background: var(--bg-secondary);
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .section-title .badge {
+    display: inline-block;
+    background: rgba(212,175,55,0.1);
+    color: var(--gano-gold);
+    padding: 4px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .section-title h2 {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  .section-title h2 .gold {
+    color: var(--gano-gold);
+  }
+
+  .section-title p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* ─── FEATURES GRID ──────────────────────── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
   .feature-card {
-    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 28px; transition: all .3s;
-  }
-  .feature-card:hover { border-color: var(--gold-dark); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,.3); }
-  .feature-icon { font-size: 32px; margin-bottom: 16px; }
-  .feature-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-  .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
-
-  .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; max-width: 1100px; margin: 0 auto; }
-  .product-card {
-    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 20px; text-align: center; transition: all .3s; position: relative; overflow: hidden;
-  }
-  .product-card.featured { border-color: var(--gold-dark); }
-  .product-card.featured::before { content: 'BEST SELLER'; position: absolute; top: 12px; right: -20px; background: var(--gold); color: #0d0d0d; font-size: 10px; font-weight: 800; padding: 3px 30px; transform: rotate(45deg); }
-  .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,.4); }
-  .product-emoji { font-size: 36px; margin-bottom: 10px; }
-  .product-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-  .product-card p { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.4; }
-  .price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 12px; }
-  .price-row .lbl { color: var(--muted); }
-  .price-row .val { font-weight: 700; color: var(--gold); }
-  .price-row .val.srp { color: var(--text); }
-
-  #app { display: none; height: 100vh; overflow: hidden; }
-  #app.active { display: flex; }
-
-  .sidebar {
-    width: 240px; min-width: 240px; background: var(--bg2); border-right: 1px solid var(--border);
-    display: flex; flex-direction: column; overflow-y: auto;
-  }
-  .sidebar-logo {
-    padding: 20px 20px 16px; border-bottom: 1px solid var(--border);
-  }
-  .sidebar-logo .logo-text { font-size: 16px; }
-  .sidebar-logo .logo-sub { font-size: 10px; }
-
-  .sidebar-user {
-    padding: 16px 20px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 12px;
-  }
-  .user-avatar {
-    width: 40px; height: 40px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 16px; color: #0d0d0d; flex-shrink: 0;
-  }
-  .user-name { font-weight: 700; font-size: 14px; }
-  .user-id { font-size: 11px; color: var(--muted); }
-
-  .nav-section { padding: 12px 0; border-bottom: 1px solid var(--border); }
-  .nav-section-label { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; padding: 0 20px 8px; }
-  .nav-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 20px; cursor: pointer; transition: all .2s; border-left: 3px solid transparent;
-    font-size: 14px; color: var(--muted); font-weight: 500;
-  }
-  .nav-item:hover { background: var(--bg3); color: var(--text); }
-  .nav-item.active { background: rgba(200,151,58,0.08); color: var(--gold); border-left-color: var(--gold); }
-  .nav-icon { font-size: 18px; width: 20px; text-align: center; }
-
-  .sidebar-footer { padding: 16px 20px; margin-top: auto; border-top: 1px solid var(--border); }
-  .sidebar-bal {
-    background: linear-gradient(135deg, rgba(200,151,58,0.15), rgba(200,151,58,0.05));
-    border: 1px solid rgba(200,151,58,0.25); border-radius: 10px; padding: 14px;
-  }
-  .sidebar-bal .lbl { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-  .sidebar-bal .amount { font-size: 22px; font-weight: 800; color: var(--gold); }
-  .sidebar-bal .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-  .main-content { flex: 1; overflow-y: auto; background: var(--bg); }
-  .page-header {
-    padding: 24px 32px 0; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    background: var(--bg); position: sticky; top: 0; z-index: 100; padding-bottom: 16px;
-  }
-  .page-header h1 { font-size: 22px; font-weight: 800; }
-  .page-header p { color: var(--muted); font-size: 13px; margin-top: 2px; }
-  .header-actions { display: flex; gap: 10px; }
-
-  .page { display: none; padding: 28px 32px; }
-  .page.active { display: block; }
-
-  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 24px; }
-  .metric-card {
-    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 18px; position: relative; overflow: hidden; transition: all .3s;
-  }
-  .metric-card:hover { border-color: var(--gold-dark); transform: translateY(-2px); }
-  .metric-card.gold { border-color: rgba(200,151,58,0.4); background: linear-gradient(135deg, rgba(200,151,58,0.08), var(--bg2)); }
-  .metric-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
-  .metric-value { font-size: 24px; font-weight: 800; line-height: 1; }
-  .metric-value.gold { color: var(--gold); }
-  .metric-value.green { color: var(--green-light); }
-  .metric-sub { font-size: 11px; color: var(--muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
-  .metric-sub .up { color: var(--green-light); }
-  .metric-sub .down { color: var(--red); }
-  .metric-icon { position: absolute; top: 14px; right: 14px; font-size: 24px; opacity: 0.2; }
-
-  .card {
-    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--gradient-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 32px;
+    transition: all var(--transition-medium);
+    position: relative;
     overflow: hidden;
   }
-  .card-header {
-    padding: 16px 20px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .card-header h3 { font-size: 15px; font-weight: 700; }
-  .card-body { padding: 20px; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
-  @media(max-width:768px){ .two-col{ grid-template-columns:1fr; } }
 
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead th { padding: 10px 14px; text-align: left; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); }
-  tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border); }
-  tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover { background: var(--bg3); }
-  
-  .badge {
-    display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 10px; font-weight: 700;
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-gold);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
   }
-  .badge-green { background: rgba(39,174,96,0.15); color: var(--green-light); }
-  .badge-gold { background: rgba(200,151,58,0.15); color: var(--gold); }
-  .badge-red { background: rgba(192,57,43,0.15); color: #e74c3c; }
-  .badge-blue { background: rgba(52,152,219,0.15); color: #3498db; }
-  .badge-purple { background: rgba(142,68,173,0.15); color: var(--purple); }
-  .badge-gray { background: rgba(136,136,136,0.15); color: var(--muted); }
 
-  /* 8-LEVEL COMPENSATION TABLE */
+  .feature-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212,175,55,0.2);
+    box-shadow: var(--shadow-gold);
+  }
+
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+
+  .feature-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+
+  .feature-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* ─── PRODUCTS ───────────────────────────── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .product-card {
+    background: var(--gradient-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-align: center;
+    transition: all var(--transition-medium);
+    position: relative;
+  }
+
+  .product-card.featured {
+    border-color: var(--gano-gold);
+    box-shadow: var(--shadow-gold);
+  }
+
+  .product-card.featured::before {
+    content: '⭐ BEST SELLER';
+    position: absolute;
+    top: 12px;
+    right: -30px;
+    background: var(--gradient-gold);
+    color: var(--bg-primary);
+    font-size: 9px;
+    font-weight: 800;
+    padding: 4px 35px;
+    transform: rotate(45deg);
+    letter-spacing: 1px;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212,175,55,0.2);
+    box-shadow: var(--shadow-gold);
+  }
+
+  .product-emoji {
+    font-size: 42px;
+    margin-bottom: 12px;
+  }
+
+  .product-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .product-card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 13px;
+  }
+
+  .price-row .lbl {
+    color: var(--text-secondary);
+  }
+
+  .price-row .val {
+    font-weight: 700;
+    color: var(--gano-gold);
+  }
+
+  .price-row .val.srp {
+    color: var(--text-primary);
+  }
+
+  /* ─── COMPENSATION TABLE ─────────────────── */
   .compensation-grid {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     gap: 1px;
-    background: var(--border);
-    border-radius: var(--radius);
+    background: var(--border-color);
+    border-radius: var(--radius-md);
     overflow: hidden;
     margin-bottom: 20px;
   }
+
   .comp-header {
-    background: var(--bg3);
-    padding: 12px 8px;
+    background: var(--bg-card);
+    padding: 14px 8px;
     text-align: center;
     font-size: 11px;
     font-weight: 700;
-    color: var(--gold);
+    color: var(--gano-gold);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
+
   .comp-cell {
-    background: var(--bg2);
-    padding: 10px 8px;
+    background: var(--bg-secondary);
+    padding: 12px 8px;
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
   }
+
   .comp-cell .highlight {
-    color: var(--gold);
+    color: var(--gano-gold);
     font-weight: 700;
   }
+
   .comp-cell .total {
-    color: var(--green-light);
+    color: var(--mint-green-light);
     font-weight: 800;
-    font-size: 14px;
+    font-size: 15px;
   }
-  .comp-cell .label {
-    font-size: 9px;
-    color: var(--muted);
-    text-transform: uppercase;
-    display: block;
-    margin-top: 2px;
-  }
+
   .comp-row-header {
-    background: var(--bg3);
+    background: var(--bg-card);
     padding: 12px 8px;
     text-align: center;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 14px;
   }
+
   .comp-row-header .level {
-    color: var(--gold);
+    color: var(--gano-gold);
   }
 
-  .level-progress { display: flex; flex-direction: column; gap: 8px; }
-  .lp-row { display: flex; align-items: center; gap: 10px; }
-  .lp-badge {
-    width: 24px; height: 24px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    color: #0d0d0d; font-size: 11px; font-weight: 800;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .lp-bar-wrap { flex: 1; height: 6px; background: var(--bg3); border-radius: 999px; overflow: hidden; }
-  .lp-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-dark)); border-radius: 999px; }
-  .lp-count { font-size: 12px; font-weight: 700; width: 60px; text-align: right; }
-
-  .rank-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: linear-gradient(135deg, rgba(200,151,58,0.2), rgba(200,151,58,0.05));
-    border: 1px solid rgba(200,151,58,0.3); border-radius: 999px;
-    padding: 4px 12px; font-size: 12px; font-weight: 700; color: var(--gold);
+  /* ─── APP LAYOUT ─────────────────────────── */
+  #app {
+    display: none;
+    height: 100vh;
+    overflow: hidden;
   }
 
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
-    z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--bg2); border: 1px solid var(--border); border-radius: 16px;
-    padding: 32px; max-width: 480px; width: 100%; position: relative; animation: slideUp .3s ease;
-  }
-  @keyframes slideUp { from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:none;} }
-  .modal-close {
-    position: absolute; top: 14px; right: 14px;
-    background: var(--bg3); border: none; color: var(--text); width: 32px; height: 32px;
-    border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;
-  }
-  .modal h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-  .modal p.sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
-  .form-group { margin-bottom: 14px; }
-  .form-group label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
-  .form-group input, .form-group select, .form-group textarea {
-    width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text); padding: 9px 12px; font-size: 13px; outline: none; transition: border .2s;
-  }
-  .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
-  .form-row { display: flex; gap: 10px; }
-  .form-row .form-group { flex: 1; }
-
-  .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
-  .toast {
-    background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
-    padding: 12px 16px; min-width: 240px; display: flex; align-items: center; gap: 10px;
-    box-shadow: 0 8px 30px rgba(0,0,0,.5); animation: slideIn .3s ease;
-  }
-  .toast.success { border-color: var(--green-light); }
-  .toast.error { border-color: var(--red); }
-  .toast.info { border-color: var(--gold); }
-  @keyframes slideIn { from{opacity:0;transform:translateX(30px);} to{opacity:1;transform:none;} }
-  .toast-icon { font-size: 18px; }
-  .toast-msg { font-size: 13px; flex: 1; }
-
-  .mobile-nav-toggle { display: none; background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; }
-  @media(max-width:768px) {
-    .sidebar { position: fixed; left: -240px; top: 0; bottom: 0; z-index: 500; transition: left .3s; }
-    .sidebar.open { left: 0; }
-    .mobile-nav-toggle { display: block; }
-    .page { padding: 16px; }
-    .page-header { padding: 14px; }
-    .metrics-grid { grid-template-columns: 1fr 1fr; }
-    .two-col { grid-template-columns: 1fr; }
-    .compensation-grid { grid-template-columns: repeat(4, 1fr); }
-  }
-
-  .ref-link-box {
-    background: var(--bg3); border: 1px dashed var(--gold-dark); border-radius: 10px;
-    padding: 12px 16px; display: flex; align-items: center; gap: 10px; cursor: pointer;
-  }
-  .ref-link-box .link { flex: 1; font-size: 12px; color: var(--gold); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .ref-link-box .copy-btn { background: var(--gold); color: #0d0d0d; border: none; border-radius: 6px; padding: 5px 10px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-
-  .channel-card {
-    background: var(--bg3); border: 2px solid var(--border); border-radius: 10px;
-    padding: 14px; text-align: center; cursor: pointer; transition: all .2s;
-  }
-  .channel-card:hover, .channel-card.selected { border-color: var(--gold); background: rgba(200,151,58,0.06); }
-  .channel-card .c-icon { font-size: 28px; margin-bottom: 4px; }
-  .channel-card .c-name { font-size: 13px; font-weight: 700; }
-  .payout-channels { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 14px; }
-
-  .admin-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; overflow-x: auto; }
-  .admin-tab { padding: 10px 18px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--muted); border-bottom: 2px solid transparent; white-space: nowrap; transition: all .2s; }
-  .admin-tab:hover { color: var(--text); }
-  .admin-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-  .admin-panel { display: none; }
-  .admin-panel.active { display: block; }
-
-  .promo-timer {
-    background: linear-gradient(135deg, rgba(200,151,58,0.15), rgba(200,151,58,0.05));
-    border: 2px solid var(--gold);
-    border-radius: var(--radius);
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 24px;
-  }
-  .promo-timer .countdown {
+  #app.active {
     display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin-top: 12px;
-  }
-  .promo-timer .countdown-item {
-    text-align: center;
-  }
-  .promo-timer .countdown-item .num {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--gold);
-  }
-  .promo-timer .countdown-item .lbl {
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
   }
 
-  .leader-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* ─── SIDEBAR ────────────────────────────── */
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .sidebar-logo {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .sidebar-logo .logo-text {
+    font-size: 16px;
+  }
+
+  .sidebar-logo .logo-sub {
+    font-size: 9px;
+  }
+
+  .sidebar-user {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
     gap: 14px;
-    margin-bottom: 20px;
   }
-  .leader-card {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    text-align: center;
-    transition: all .3s;
-  }
-  .leader-card:hover {
-    border-color: var(--gold);
-    transform: translateY(-2px);
-  }
-  .leader-card .avatar {
-    width: 48px;
-    height: 48px;
+
+  .user-avatar {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    margin: 0 auto 8px;
+    background: var(--gradient-gold);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    color: #0d0d0d;
+    font-size: 18px;
+    color: var(--bg-primary);
+    flex-shrink: 0;
   }
-  .leader-card .name { font-weight: 700; font-size: 14px; }
-  .leader-card .status { font-size: 12px; }
-  .leader-card .status.active { color: var(--green-light); }
-  .leader-card .status.inactive { color: var(--red); }
-  .leader-card .stats { font-size: 11px; color: var(--muted); margin-top: 6px; }
 
-  .stockist-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
+  .user-name {
+    font-weight: 700;
+    font-size: 14px;
   }
-  .stockist-card {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px;
+
+  .user-id {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .nav-section {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0 24px 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border-left: 3px solid transparent;
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .nav-item:hover {
+    background: var(--bg-card);
+    color: var(--text-primary);
+  }
+
+  .nav-item.active {
+    background: rgba(212,175,55,0.08);
+    color: var(--gano-gold);
+    border-left-color: var(--gano-gold);
+  }
+
+  .nav-icon {
+    font-size: 18px;
+    width: 22px;
     text-align: center;
   }
-  .stockist-card .center-name { font-weight: 700; font-size: 13px; }
-  .stockist-card .cv { color: var(--gold); font-weight: 700; font-size: 16px; }
+
+  .sidebar-footer {
+    padding: 16px 24px;
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .sidebar-bal {
+    background: linear-gradient(135deg, rgba(212,175,55,0.12), rgba(212,175,55,0.03));
+    border: 1px solid rgba(212,175,55,0.2);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+
+  .sidebar-bal .lbl {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .sidebar-bal .amount {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--gano-gold);
+  }
+
+  .sidebar-bal .sub {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* ─── MAIN CONTENT ───────────────────────── */
+  .main-content {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--bg-primary);
+  }
+
+  .page-header {
+    padding: 24px 32px 0;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-primary);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding-bottom: 16px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+    font-weight: 800;
+  }
+
+  .page-header p {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-top: 2px;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  /* ─── PAGES ───────────────────────────────── */
+  .page {
+    display: none;
+    padding: 28px 32px;
+    animation: slideUp 0.4s ease;
+  }
+
+  .page.active {
+    display: block;
+  }
+
+  /* ─── METRIC CARDS ───────────────────────── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .metric-card {
+    background: var(--gradient-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-fast);
+  }
+
+  .metric-card:hover {
+    border-color: rgba(212,175,55,0.2);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-gold);
+  }
+
+  .metric-card.gold {
+    border-color: rgba(212,175,55,0.3);
+    background: linear-gradient(135deg, rgba(212,175,55,0.08), var(--bg-card));
+  }
+
+  .metric-card.gold .metric-value {
+    color: var(--gano-gold);
+  }
+
+  .metric-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+  }
+
+  .metric-value {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .metric-value.green {
+    color: var(--mint-green-light);
+  }
+
+  .metric-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .metric-sub .up {
+    color: var(--mint-green-light);
+  }
+
+  .metric-sub .down {
+    color: #e74c3c;
+  }
+
+  .metric-icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 26px;
+    opacity: 0.1;
+  }
+
+  /* ─── CARDS ───────────────────────────────── */
+  .card {
+    background: var(--gradient-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: all var(--transition-fast);
+  }
+
+  .card:hover {
+    border-color: rgba(212,175,55,0.1);
+  }
+
+  .card-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  /* ─── TABLES ─────────────────────────────── */
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+  }
+
+  tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:hover {
+    background: var(--bg-card);
+  }
+
+  /* ─── BADGES ─────────────────────────────── */
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-green {
+    background: rgba(46,139,87,0.15);
+    color: var(--mint-green-light);
+  }
+
+  .badge-gold {
+    background: rgba(212,175,55,0.15);
+    color: var(--gano-gold);
+  }
+
+  .badge-red {
+    background: rgba(139,0,0,0.15);
+    color: var(--ganoderma-red-light);
+  }
+
+  .badge-blue {
+    background: rgba(52,152,219,0.15);
+    color: #3498db;
+  }
+
+  .badge-purple {
+    background: rgba(155,89,182,0.15);
+    color: #9b59b6;
+  }
+
+  .badge-gray {
+    background: rgba(108,117,125,0.15);
+    color: var(--text-muted);
+  }
+
+  /* ─── LEVEL PROGRESS ─────────────────────── */
+  .level-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lp-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lp-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gradient-gold);
+    color: var(--bg-primary);
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .lp-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: var(--bg-card);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .lp-bar {
+    height: 100%;
+    background: var(--gradient-gold);
+    border-radius: 999px;
+    transition: width 1s ease;
+  }
+
+  .lp-count {
+    font-size: 13px;
+    font-weight: 700;
+    width: 70px;
+    text-align: right;
+    color: var(--gano-gold);
+  }
+
+  /* ─── PROMO TIMER ────────────────────────── */
+  .promo-timer {
+    background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(139,0,0,0.05));
+    border: 1px solid rgba(212,175,55,0.2);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .promo-timer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.05), transparent 70%);
+    pointer-events: none;
+  }
+
+  .promo-timer .title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gano-gold);
+    margin-bottom: 4px;
+  }
+
+  .promo-timer .sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .countdown {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .countdown-item {
+    text-align: center;
+  }
+
+  .countdown-item .num {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--gano-gold);
+    text-shadow: 0 0 30px rgba(212,175,55,0.1);
+  }
+
+  .countdown-item .lbl {
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ─── PYRAMID NETWORK ────────────────────── */
+  .pyramid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  .pyramid-level {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 8px;
+    position: relative;
+    flex-wrap: wrap;
+  }
+
+  .pyramid-node {
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    text-align: center;
+    transition: all var(--transition-medium);
+    cursor: pointer;
+    position: relative;
+  }
+
+  .pyramid-node:hover {
+    border-color: var(--gano-gold);
+    transform: scale(1.1);
+    z-index: 5;
+    box-shadow: var(--shadow-gold);
+  }
+
+  .pyramid-node.you {
+    border-color: var(--gano-gold);
+    background: rgba(212,175,55,0.15);
+    width: 70px;
+    height: 70px;
+  }
+
+  .pyramid-node.you .node-label {
+    color: var(--gano-gold);
+    font-weight: 800;
+  }
+
+  .pyramid-node .node-avatar {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .pyramid-node .node-label {
+    font-size: 7px;
+    color: var(--text-secondary);
+    line-height: 1.2;
+    margin-top: 2px;
+  }
+
+  .pyramid-node .node-id {
+    font-size: 6px;
+    color: var(--text-muted);
+  }
+
+  .pyramid-node .node-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    font-size: 12px;
+  }
+
+  .pyramid-node.corp-node {
+    border-color: #9b59b6;
+    background: rgba(155,89,182,0.1);
+  }
+
+  .pyramid-node.corp-node .node-label {
+    color: #9b59b6;
+  }
+
+  .pyramid-node.empty-node {
+    border-style: dashed;
+    opacity: 0.4;
+  }
+
+  .pyramid-connector {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin: -2px 0;
+  }
+
+  .pyramid-connector .v-line {
+    width: 2px;
+    height: 16px;
+    background: var(--border-color);
+  }
+
+  /* ─── MODALS ─────────────────────────────── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+  }
+
+  .modal {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 36px;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+    animation: slideUp 0.3s ease;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .modal::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: var(--radius-lg);
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(212,175,55,0.2), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+  }
+
+  .modal-close:hover {
+    border-color: var(--gano-gold);
+    color: var(--text-primary);
+  }
+
+  .modal h2 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .modal .sub {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  /* ─── FORMS ───────────────────────────────── */
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    padding: 10px 14px;
+    font-size: 14px;
+    outline: none;
+    transition: all var(--transition-fast);
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: var(--gano-gold);
+    box-shadow: 0 0 20px rgba(212,175,55,0.05);
+  }
+
+  .form-group input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .form-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .form-row .form-group {
+    flex: 1;
+  }
+
+  /* ─── TOASTS ─────────────────────────────── */
+  .toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .toast {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 14px 20px;
+    min-width: 280px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-lg);
+    animation: slideIn 0.3s ease;
+  }
+
+  .toast.success {
+    border-color: var(--mint-green);
+  }
+
+  .toast.error {
+    border-color: var(--ganoderma-red);
+  }
+
+  .toast.info {
+    border-color: var(--gano-gold);
+  }
+
+  .toast-icon {
+    font-size: 20px;
+  }
+
+  .toast-msg {
+    font-size: 14px;
+    flex: 1;
+  }
+
+  /* ─── CHANNEL CARDS ──────────────────────── */
+  .channel-card {
+    background: var(--bg-input);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .channel-card:hover {
+    border-color: var(--gano-gold);
+  }
+
+  .channel-card.selected {
+    border-color: var(--gano-gold);
+    background: rgba(212,175,55,0.05);
+    box-shadow: var(--shadow-gold);
+  }
+
+  .channel-card .c-icon {
+    font-size: 30px;
+    margin-bottom: 4px;
+  }
+
+  .channel-card .c-name {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .payout-channels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  /* ─── REFERRAL LINK ──────────────────────── */
+  .ref-link-box {
+    background: var(--bg-input);
+    border: 1px dashed rgba(212,175,55,0.3);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .ref-link-box:hover {
+    border-color: var(--gano-gold);
+  }
+
+  .ref-link-box .link {
+    flex: 1;
+    font-size: 13px;
+    color: var(--gano-gold);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ref-link-box .copy-btn {
+    background: var(--gradient-gold);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* ─── RANK BADGE ─────────────────────────── */
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(212,175,55,0.1);
+    border: 1px solid rgba(212,175,55,0.2);
+    border-radius: 999px;
+    padding: 4px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gano-gold);
+  }
+
+  /* ─── ADMIN TABS ─────────────────────────── */
+  .admin-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+
+  .admin-tab {
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+  }
+
+  .admin-tab:hover {
+    color: var(--text-primary);
+  }
+
+  .admin-tab.active {
+    color: var(--gano-gold);
+    border-bottom-color: var(--gano-gold);
+  }
+
+  .admin-panel {
+    display: none;
+  }
+
+  .admin-panel.active {
+    display: block;
+  }
+
+  /* ─── RESPONSIVE ─────────────────────────── */
+  .mobile-nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      position: fixed;
+      left: -280px;
+      top: 0;
+      bottom: 0;
+      z-index: 500;
+      transition: left var(--transition-medium);
+      width: 280px;
+      min-width: 280px;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .mobile-nav-toggle {
+      display: block;
+    }
+
+    .hero-nav {
+      padding: 16px 20px;
+    }
+
+    .hero-stats {
+      gap: 24px;
+      padding: 20px;
+    }
+
+    .hero h1 {
+      font-size: 32px;
+    }
+
+    .section {
+      padding: 40px 16px;
+    }
+
+    .page {
+      padding: 16px;
+    }
+
+    .page-header {
+      padding: 14px 16px;
+    }
+
+    .page-header h1 {
+      font-size: 20px;
+    }
+
+    .metrics-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+
+    .compensation-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .countdown {
+      gap: 16px;
+    }
+
+    .countdown-item .num {
+      font-size: 24px;
+    }
+
+    .modal {
+      padding: 24px;
+    }
+
+    .form-row {
+      flex-direction: column;
+    }
+
+    .nav-links .btn {
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+
+    .pyramid-node {
+      width: 44px;
+      height: 44px;
+    }
+
+    .pyramid-node.you {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 {
+      font-size: 28px;
+    }
+
+    .hero-stats {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .hero-stat .val {
+      font-size: 24px;
+    }
+
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .compensation-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 </style>
 </head>
 <body>
 
-<!-- LANDING PAGE -->
+<!-- ─── LANDING PAGE ─────────────────────────── -->
 <div id="landing" class="view active">
   <div class="hero">
     <nav class="hero-nav">
-      <div class="logo">
+      <a href="#" class="logo" onclick="return false;">
         <div class="logo-icon">G</div>
         <div>
           <div class="logo-text">C35</div>
-          <div class="logo-sub">PROJECT VELOCITY</div>
+          <div class="logo-sub">Project Velocity</div>
         </div>
-      </div>
+      </a>
       <div class="nav-links">
-        <button class="btn btn-outline" onclick="openModal('loginModal')">Log In</button>
-        <button class="btn btn-gold" onclick="openModal('registerModal')">Join Now</button>
+        <button class="btn btn-outline-gold btn-sm" onclick="openModal('loginModal')">Sign In</button>
+        <button class="btn btn-gold btn-sm" onclick="openModal('registerModal')">Join Now</button>
       </div>
     </nav>
+
     <div class="hero-body">
-      <div class="hero-badge"><span></span> 🚀 3-MONTH TEAM PROMO ACTIVE</div>
-      <h1>Be Your Own Boss.<br><span>Earn Real Income.</span></h1>
-      <p>C35 Project Velocity is a special 3-month program designed to accelerate the growth, development, and success of its distributors and Stockist Centers. <strong>8-Level Unilevel Compensation!</strong></p>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        🚀 3-Month Team Promo Active
+      </div>
+      <h1>
+        Be Your Own Boss.<br>
+        <span class="highlight">Earn Unlimited Income.</span>
+      </h1>
+      <p>
+        C35 Project Velocity is a special program designed to accelerate the growth, development, and success of its distributors and Stockist Centers.
+      </p>
       <div class="hero-cta">
-        <button class="btn btn-gold btn-lg" onclick="openModal('registerModal')">🚀 Start Earning Today</button>
-        <button class="btn btn-outline btn-lg" onclick="scrollToSection('products-section')">View Products</button>
+        <button class="btn btn-gold btn-lg" onclick="openModal('registerModal')">🚀 Start Earning</button>
+        <button class="btn btn-outline-gold btn-lg" onclick="scrollToSection('compensation-section')">View Plan</button>
       </div>
     </div>
+
     <div class="hero-stats">
-      <div class="hero-stat"><div class="val">₱2.4M+</div><div class="lbl">Total Payouts</div></div>
-      <div class="hero-stat"><div class="val">12,400+</div><div class="lbl">Active Members</div></div>
-      <div class="hero-stat"><div class="val">8 Levels</div><div class="lbl">Commission Depth</div></div>
-      <div class="hero-stat"><div class="val">₱200</div><div class="lbl">Min Withdrawal</div></div>
+      <div class="hero-stat">
+        <div class="val">₱2.4M+</div>
+        <div class="lbl">Total Payouts</div>
+      </div>
+      <div class="hero-stat">
+        <div class="val">12,400+</div>
+        <div class="lbl">Active Members</div>
+      </div>
+      <div class="hero-stat">
+        <div class="val">8 Levels</div>
+        <div class="lbl">Commission Depth</div>
+      </div>
+      <div class="hero-stat">
+        <div class="val">₱200</div>
+        <div class="lbl">Min Withdrawal</div>
+      </div>
     </div>
   </div>
 
   <!-- Features -->
-  <div class="section" style="background: var(--bg2);">
+  <div class="section section-dark">
     <div class="section-title">
-      <h2>Everything You Need to <span>Succeed</span></h2>
-      <p>A complete automated business platform built for serious network marketers</p>
+      <div class="badge">Why Choose Us</div>
+      <h2>Everything You Need to <span class="gold">Succeed</span></h2>
+      <p>A premium automated business platform built for serious network marketers</p>
     </div>
     <div class="features-grid">
       <div class="feature-card">
@@ -536,38 +1766,37 @@
     </div>
   </div>
 
-  <!-- 8-LEVEL COMPENSATION PLAN -->
-  <div class="section">
+  <!-- 8-Level Compensation -->
+  <div class="section" id="compensation-section">
     <div class="section-title">
-      <h2>8-Level <span>Unilevel Compensation</span></h2>
-      <p>Complete breakdown of earnings per level based on the 8-level unilevel structure</p>
+      <div class="badge">Compensation Plan</div>
+      <h2>8-Level <span class="gold">Unilevel</span></h2>
+      <p>Complete breakdown of earnings per level based on the official Gano iTouch compensation structure</p>
     </div>
-    
-    <!-- Compensation Summary -->
+
     <div style="max-width:1100px; margin:0 auto 30px; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px;">
-      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; text-align:center;">
-        <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Total Members</div>
-        <div style="font-size:32px; font-weight:900; color:var(--gold);">510</div>
-        <div style="font-size:12px; color:var(--muted);">Full 8-Level Network</div>
+      <div style="background:var(--gradient-card); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:20px; text-align:center;">
+        <div style="font-size:11px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px;">Total Members</div>
+        <div style="font-size:32px; font-weight:900; color:var(--gano-gold);">510</div>
+        <div style="font-size:12px; color:var(--text-muted);">Full 8-Level Network</div>
       </div>
-      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; text-align:center;">
-        <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Total Pairing</div>
-        <div style="font-size:32px; font-weight:900; color:var(--green-light);">₱102,000</div>
-        <div style="font-size:12px; color:var(--muted);">Pairing Bonus Total</div>
+      <div style="background:var(--gradient-card); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:20px; text-align:center;">
+        <div style="font-size:11px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px;">Total Pairing</div>
+        <div style="font-size:32px; font-weight:900; color:var(--mint-green-light);">₱102,000</div>
+        <div style="font-size:12px; color:var(--text-muted);">Pairing Bonus Total</div>
       </div>
-      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; text-align:center;">
-        <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Total Unilevel</div>
-        <div style="font-size:32px; font-weight:900; color:var(--gold);">₱140,320</div>
-        <div style="font-size:12px; color:var(--muted);">Unilevel Bonus Total</div>
+      <div style="background:var(--gradient-card); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:20px; text-align:center;">
+        <div style="font-size:11px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px;">Total Unilevel</div>
+        <div style="font-size:32px; font-weight:900; color:var(--gano-gold);">₱140,320</div>
+        <div style="font-size:12px; color:var(--text-muted);">Unilevel Bonus Total</div>
       </div>
-      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; text-align:center;">
-        <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Grand Total</div>
-        <div style="font-size:32px; font-weight:900; color:var(--gold);">₱1,982,880</div>
-        <div style="font-size:12px; color:var(--muted);">All Bonuses Combined</div>
+      <div style="background:var(--gradient-card); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:20px; text-align:center;">
+        <div style="font-size:11px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px;">Grand Total</div>
+        <div style="font-size:32px; font-weight:900; color:var(--gano-gold);">₱1,982,880</div>
+        <div style="font-size:12px; color:var(--text-muted);">All Bonuses Combined</div>
       </div>
     </div>
 
-    <!-- 8-Level Table -->
     <div style="max-width:1100px; margin:0 auto;">
       <div class="compensation-grid">
         <div class="comp-header">Level</div>
@@ -577,9 +1806,8 @@
         <div class="comp-header">DR</div>
         <div class="comp-header">Pairing</div>
         <div class="comp-header">Unilevel</div>
-        <div class="comp-header">Total Payout</div>
+        <div class="comp-header">Total</div>
 
-        <!-- Level 1 -->
         <div class="comp-row-header"><span class="level">L1</span></div>
         <div class="comp-cell"><span class="highlight">1</span></div>
         <div class="comp-cell"><span class="highlight">1</span></div>
@@ -589,7 +1817,6 @@
         <div class="comp-cell">₱50</div>
         <div class="comp-cell"><span class="total">₱100</span></div>
 
-        <!-- Level 2 -->
         <div class="comp-row-header"><span class="level">L2</span></div>
         <div class="comp-cell"><span class="highlight">2</span></div>
         <div class="comp-cell"><span class="highlight">2</span></div>
@@ -599,7 +1826,6 @@
         <div class="comp-cell">₱20</div>
         <div class="comp-cell"><span class="total">₱80</span></div>
 
-        <!-- Level 3 -->
         <div class="comp-row-header"><span class="level">L3</span></div>
         <div class="comp-cell"><span class="highlight">4</span></div>
         <div class="comp-cell"><span class="highlight">4</span></div>
@@ -609,7 +1835,6 @@
         <div class="comp-cell">₱20</div>
         <div class="comp-cell"><span class="total">₱160</span></div>
 
-        <!-- Level 4 -->
         <div class="comp-row-header"><span class="level">L4</span></div>
         <div class="comp-cell"><span class="highlight">8</span></div>
         <div class="comp-cell"><span class="highlight">8</span></div>
@@ -619,7 +1844,6 @@
         <div class="comp-cell">₱20</div>
         <div class="comp-cell"><span class="total">₱320</span></div>
 
-        <!-- Level 5 -->
         <div class="comp-row-header"><span class="level">L5</span></div>
         <div class="comp-cell"><span class="highlight">16</span></div>
         <div class="comp-cell"><span class="highlight">16</span></div>
@@ -629,7 +1853,6 @@
         <div class="comp-cell">₱20</div>
         <div class="comp-cell"><span class="total">₱640</span></div>
 
-        <!-- Level 6 -->
         <div class="comp-row-header"><span class="level">L6</span></div>
         <div class="comp-cell"><span class="highlight">32</span></div>
         <div class="comp-cell"><span class="highlight">32</span></div>
@@ -639,7 +1862,6 @@
         <div class="comp-cell">₱20</div>
         <div class="comp-cell"><span class="total">₱1,280</span></div>
 
-        <!-- Level 7 -->
         <div class="comp-row-header"><span class="level">L7</span></div>
         <div class="comp-cell"><span class="highlight">64</span></div>
         <div class="comp-cell"><span class="highlight">64</span></div>
@@ -649,171 +1871,199 @@
         <div class="comp-cell">₱20</div>
         <div class="comp-cell"><span class="total">₱2,560</span></div>
 
-        <!-- Level 8 -->
-        <div class="comp-row-header" style="background:rgba(200,151,58,0.15);"><span class="level" style="color:var(--gold);">L8</span></div>
-        <div class="comp-cell" style="background:rgba(200,151,58,0.05);"><span class="highlight">128</span></div>
-        <div class="comp-cell" style="background:rgba(200,151,58,0.05);"><span class="highlight">128</span></div>
-        <div class="comp-cell" style="background:rgba(200,151,58,0.05);"><span class="total">256</span></div>
-        <div class="comp-cell" style="background:rgba(200,151,58,0.05);">₱51,200</div>
-        <div class="comp-cell" style="background:rgba(200,151,58,0.05);">₱12,800</div>
-        <div class="comp-cell" style="background:rgba(200,151,58,0.05);">₱30</div>
-        <div class="comp-cell" style="background:rgba(200,151,58,0.05);"><span class="total">₱7,680</span></div>
+        <div class="comp-row-header" style="background:rgba(212,175,55,0.1);"><span class="level" style="color:var(--gano-gold);">L8</span></div>
+        <div class="comp-cell" style="background:rgba(212,175,55,0.03);"><span class="highlight">128</span></div>
+        <div class="comp-cell" style="background:rgba(212,175,55,0.03);"><span class="highlight">128</span></div>
+        <div class="comp-cell" style="background:rgba(212,175,55,0.03);"><span class="total">256</span></div>
+        <div class="comp-cell" style="background:rgba(212,175,55,0.03);">₱51,200</div>
+        <div class="comp-cell" style="background:rgba(212,175,55,0.03);">₱12,800</div>
+        <div class="comp-cell" style="background:rgba(212,175,55,0.03);">₱30</div>
+        <div class="comp-cell" style="background:rgba(212,175,55,0.03);"><span class="total">₱7,680</span></div>
       </div>
 
-      <!-- Grand Totals -->
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; background:var(--bg3); border-radius:var(--radius); padding:16px; margin-top:12px;">
-        <div style="text-align:center;"><span style="color:var(--muted); font-size:11px;">Total DR</span><br><span style="color:var(--gold); font-weight:800; font-size:18px;">₱102,000</span></div>
-        <div style="text-align:center;"><span style="color:var(--muted); font-size:11px;">Total Pairing</span><br><span style="color:var(--gold); font-weight:800; font-size:18px;">₱25,500</span></div>
-        <div style="text-align:center;"><span style="color:var(--muted); font-size:11px;">Total Unilevel</span><br><span style="color:var(--gold); font-weight:800; font-size:18px;">₱12,820</span></div>
-        <div style="text-align:center;"><span style="color:var(--muted); font-size:11px;">Entry Package</span><br><span style="color:var(--gold); font-weight:800; font-size:18px;">₱3,888</span></div>
-        <div style="text-align:center;"><span style="color:var(--muted); font-size:11px;">Grand Total</span><br><span style="color:var(--green-light); font-weight:900; font-size:20px;">₱1,982,880</span></div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; background:var(--bg-card); border-radius:var(--radius-md); padding:16px; margin-top:12px; border:1px solid var(--border-color);">
+        <div style="text-align:center;"><span style="color:var(--text-muted); font-size:11px;">Total DR</span><br><span style="color:var(--gano-gold); font-weight:800; font-size:18px;">₱102,000</span></div>
+        <div style="text-align:center;"><span style="color:var(--text-muted); font-size:11px;">Total Pairing</span><br><span style="color:var(--gano-gold); font-weight:800; font-size:18px;">₱25,500</span></div>
+        <div style="text-align:center;"><span style="color:var(--text-muted); font-size:11px;">Total Unilevel</span><br><span style="color:var(--gano-gold); font-weight:800; font-size:18px;">₱12,820</span></div>
+        <div style="text-align:center;"><span style="color:var(--text-muted); font-size:11px;">Entry Package</span><br><span style="color:var(--gano-gold); font-weight:800; font-size:18px;">₱3,888</span></div>
+        <div style="text-align:center;"><span style="color:var(--text-muted); font-size:11px;">Grand Total</span><br><span style="color:var(--mint-green-light); font-weight:900; font-size:20px;">₱1,982,880</span></div>
       </div>
     </div>
 
-    <div style="text-align:center; margin-top:32px;">
+    <div style="text-align:center; margin-top:40px;">
       <button class="btn btn-gold btn-lg" onclick="openModal('registerModal')">🎯 Join & Start Earning</button>
     </div>
   </div>
 
   <!-- Products -->
-  <div class="section" style="background:var(--bg2);" id="products-section">
+  <div class="section section-dark" id="products-section">
     <div class="section-title">
-      <h2>Product <span>Packages</span></h2>
-      <p>Premium Ganoderma-based wellness products with competitive Distributor and Retail pricing</p>
+      <div class="badge">Premium Products</div>
+      <h2>Product <span class="gold">Packages</span></h2>
+      <p>Premium Ganoderma-based wellness products with competitive pricing</p>
     </div>
     <div class="products-grid">
       <div class="product-card">
         <div class="product-emoji">☕</div>
         <h3>3-in-1 Coffee</h3>
-        <p>Ganoderma-infused coffee blend.</p>
+        <p>Ganoderma-infused blend</p>
         <div class="price-row"><span class="lbl">DP:</span><span class="val">₱350</span></div>
         <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱450</span></div>
-        <button class="btn btn-gold btn-sm btn-block" style="margin-top:8px;" onclick="openModal('registerModal')">Order Now</button>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
       </div>
       <div class="product-card featured">
         <div class="product-emoji">🎁</div>
         <h3>Go Kit Starter</h3>
-        <p>Entry business kit + ID.</p>
+        <p>Entry kit + ID</p>
         <div class="price-row"><span class="lbl">DP:</span><span class="val">₱1,500</span></div>
         <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱2,000</span></div>
-        <button class="btn btn-gold btn-sm btn-block" style="margin-top:8px;" onclick="openModal('registerModal')">Order Now</button>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
       </div>
       <div class="product-card">
         <div class="product-emoji">🍵</div>
         <h3>Black Coffee</h3>
-        <p>Sugar-free Ganoderma.</p>
+        <p>Sugar-free Ganoderma</p>
         <div class="price-row"><span class="lbl">DP:</span><span class="val">₱380</span></div>
         <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱480</span></div>
-        <button class="btn btn-gold btn-sm btn-block" style="margin-top:8px;" onclick="openModal('registerModal')">Order Now</button>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
       </div>
       <div class="product-card">
         <div class="product-emoji">🏆</div>
         <h3>Premium Package</h3>
-        <p>Full distributor kit.</p>
+        <p>Full distributor kit</p>
         <div class="price-row"><span class="lbl">DP:</span><span class="val">₱3,500</span></div>
         <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱4,500</span></div>
-        <button class="btn btn-gold btn-sm btn-block" style="margin-top:8px;" onclick="openModal('registerModal')">Order Now</button>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
       </div>
       <div class="product-card">
         <div class="product-emoji">🧪</div>
         <h3>Ganocafe Mocha</h3>
-        <p>Rich mocha flavor.</p>
+        <p>Rich mocha flavor</p>
         <div class="price-row"><span class="lbl">DP:</span><span class="val">₱360</span></div>
         <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱460</span></div>
-        <button class="btn btn-gold btn-sm btn-block" style="margin-top:8px;" onclick="openModal('registerModal')">Order Now</button>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
       </div>
       <div class="product-card">
         <div class="product-emoji">💊</div>
         <h3>Gano Capsules</h3>
-        <p>Pure Ganoderma extract.</p>
+        <p>Pure Ganoderma extract</p>
         <div class="price-row"><span class="lbl">DP:</span><span class="val">₱900</span></div>
         <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱1,200</span></div>
-        <button class="btn btn-gold btn-sm btn-block" style="margin-top:8px;" onclick="openModal('registerModal')">Order Now</button>
+        <button class="btn btn-gold btn-sm btn-block" style="margin-top:10px;" onclick="openModal('registerModal')">Order Now</button>
       </div>
     </div>
   </div>
 
-  <footer style="background: var(--bg2); border-top: 1px solid var(--border); padding: 30px 40px; text-align: center;">
-    <div class="logo" style="justify-content:center; margin-bottom:12px;">
-      <div class="logo-icon">G</div>
-      <div><div class="logo-text">C35 PROJECT VELOCITY</div><div class="logo-sub">Independent Distributor Platform</div></div>
+  <footer style="background:var(--bg-secondary); border-top:1px solid var(--border-color); padding:40px; text-align:center;">
+    <div class="logo" style="justify-content:center; margin-bottom:16px;">
+      <div class="logo-icon" style="width:40px;height:40px;font-size:18px;">G</div>
+      <div>
+        <div class="logo-text" style="font-size:16px;">Gano iTouch</div>
+        <div class="logo-sub">Independent Distributor Platform</div>
+      </div>
     </div>
-    <p style="color: var(--muted); font-size:13px; max-width:500px; margin:0 auto 10px;">This is an independent distributor platform powered by Gano Excel International products.</p>
-    <p style="color: var(--muted); font-size:12px;">© 2025 Gano Excel International Distributor System. All rights reserved.</p>
+    <p style="color:var(--text-secondary); font-size:13px; max-width:500px; margin:0 auto 10px;">This is an independent distributor platform powered by Gano International products.</p>
+    <p style="color:var(--text-muted); font-size:12px;">© 2025 Gano iTouch Distributor System. All rights reserved.</p>
   </footer>
 </div>
 
-<!-- MODALS -->
+<!-- ─── MODALS ─────────────────────────────────── -->
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('loginModal')">×</button>
     <h2>Welcome Back 👋</h2>
-    <p class="sub">Sign in to your Gano Excel distributor account</p>
+    <p class="sub">Sign in to your Gano iTouch account</p>
     <div class="form-group">
       <label>Member ID or Email</label>
-      <input type="text" id="login-id" placeholder="GEI-XXXXXX">
+      <input type="text" id="login-id" placeholder="GIT-XXXXXX">
     </div>
     <div class="form-group">
       <label>Password</label>
       <input type="password" id="login-pw" placeholder="••••••••">
     </div>
     <button class="btn btn-gold btn-block btn-lg" onclick="doLogin()" style="margin-top:8px;">Sign In</button>
-    <div style="text-align:center; margin-top:12px; font-size:13px; color:var(--muted);">New member? <a href="#" onclick="switchModal('loginModal','registerModal')" style="color:var(--gold);">Register here</a></div>
+    <div style="text-align:center; margin-top:16px; font-size:13px; color:var(--text-secondary);">
+      New member? <a href="#" onclick="switchModal('loginModal','registerModal')" style="color:var(--gano-gold);">Register here</a>
+    </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="registerModal">
-  <div class="modal" style="max-width:500px;">
+  <div class="modal" style="max-width:520px;">
     <button class="modal-close" onclick="closeModal('registerModal')">×</button>
     <h2>Create Account 🚀</h2>
-    <p class="sub">Join Gano Excel International as an Independent Distributor</p>
-    <div style="background:var(--bg3); border:1px solid rgba(200,151,58,0.3); border-radius:8px; padding:10px 14px; font-size:13px; color:var(--gold); margin-bottom:16px;">
-      🔗 Sponsor: <strong style="color:var(--text);">CELSO LOZABIA</strong> &nbsp;|&nbsp; ID: <strong style="color:var(--text);">GEI-100001</strong>
+    <p class="sub">Join Gano iTouch as an Independent Distributor</p>
+    
+    <div class="form-group">
+      <label>Sponsor Name <span style="color:var(--text-muted);font-weight:400;">(full name)</span></label>
+      <input type="text" id="reg-sponsor-name" placeholder="Enter sponsor's full name">
     </div>
+    <div class="form-group">
+      <label>Sponsor ID <span style="color:var(--text-muted);font-weight:400;">(GIT-XXXXXX)</span></label>
+      <input type="text" id="reg-sponsor-id" placeholder="GIT-XXXXXX">
+    </div>
+    
+    <div style="border-top:1px solid var(--border-color); margin:16px 0;"></div>
+    
     <div class="form-row">
       <div class="form-group"><label>First Name</label><input type="text" id="reg-fname" placeholder="Juan"></div>
       <div class="form-group"><label>Last Name</label><input type="text" id="reg-lname" placeholder="Dela Cruz"></div>
     </div>
     <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="juan@example.com"></div>
     <div class="form-group"><label>Mobile</label><input type="text" id="reg-mobile" placeholder="09XXXXXXXXX"></div>
+    
+    <div style="border-top:1px solid var(--border-color); margin:16px 0;"></div>
+    
     <div class="form-group">
       <label>Activation Package</label>
-      <select id="reg-package">
-        <option value="1500">Go Kit Starter — ₱1,500</option>
-        <option value="3500">Premium Package — ₱3,500</option>
+      <select id="reg-package" style="background:var(--bg-input); border:1px solid var(--border-color); border-radius:var(--radius-sm); color:var(--text-primary); padding:10px 14px; width:100%;">
         <option value="3888">Entry Package — ₱3,888</option>
       </select>
     </div>
+    
+    <div class="form-group">
+      <label>Activation Code <span style="color:var(--text-muted);font-weight:400;">(provided by your sponsor)</span></label>
+      <input type="text" id="reg-activation-code" placeholder="e.g., GANO-2025-XXXX">
+    </div>
+    
     <div class="form-group"><label>Password</label><input type="password" id="reg-pw" placeholder="Create a strong password"></div>
+    <div class="form-group"><label>Confirm Password</label><input type="password" id="reg-pw2" placeholder="Confirm your password"></div>
+    
     <button class="btn btn-gold btn-block btn-lg" onclick="doRegister()" style="margin-top:8px;">✅ Activate Account</button>
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- ─── MAIN APP ────────────────────────────────── -->
 <div id="app">
   <div class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div class="logo">
+      <div class="logo" style="gap:10px;">
         <div class="logo-icon" style="width:36px;height:36px;font-size:18px;">G</div>
-        <div><div class="logo-text" style="font-size:15px;">Gano Excel</div><div class="logo-sub">International</div></div>
+        <div>
+          <div class="logo-text" style="font-size:15px;">Gano iTouch</div>
+          <div class="logo-sub">International</div>
+        </div>
       </div>
     </div>
     <div class="sidebar-user">
       <div class="user-avatar" id="sb-avatar">J</div>
-      <div><div class="user-name" id="sb-name">Juan Dela Cruz</div><div class="user-id" id="sb-id">GEI-204891</div></div>
+      <div>
+        <div class="user-name" id="sb-name">Juan Dela Cruz</div>
+        <div class="user-id" id="sb-id">GIT-204891</div>
+      </div>
     </div>
     <div class="nav-section">
       <div class="nav-section-label">Main</div>
       <div class="nav-item active" onclick="showPage('dashboard', this)"><span class="nav-icon">📊</span> Dashboard</div>
       <div class="nav-item" onclick="showPage('earnings', this)"><span class="nav-icon">💰</span> Earnings</div>
       <div class="nav-item" onclick="showPage('compensation', this)"><span class="nav-icon">📈</span> 8-Level Comp</div>
-      <div class="nav-item" onclick="showPage('network', this)"><span class="nav-icon">🌐</span> My Network</div>
+      <div class="nav-item" onclick="showPage('network', this)"><span class="nav-icon">🌐</span> Network</div>
     </div>
     <div class="nav-section">
       <div class="nav-section-label">Business</div>
       <div class="nav-item" onclick="showPage('products', this)"><span class="nav-icon">📦</span> Products</div>
       <div class="nav-item" onclick="showPage('payout', this)"><span class="nav-icon">💸</span> Payout</div>
-      <div class="nav-item" onclick="showPage('referral', this)"><span class="nav-icon">🔗</span> Referral Link</div>
+      <div class="nav-item" onclick="showPage('referral', this)"><span class="nav-icon">🔗</span> Referral</div>
     </div>
     <div class="nav-section">
       <div class="nav-section-label">System</div>
@@ -845,8 +2095,8 @@
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
       <div class="promo-timer">
-        <div style="font-size:14px; font-weight:700; color:var(--gold);">🔥 3-MONTH TEAM PROMO</div>
-        <div style="font-size:12px; color:var(--muted); margin-bottom:8px;">Accelerate your team growth and earn big!</div>
+        <div class="title">🔥 3-Month Team Promo</div>
+        <div class="sub">Accelerate your team growth and earn big!</div>
         <div class="countdown">
           <div class="countdown-item"><div class="num" id="promo-days">72</div><div class="lbl">Days</div></div>
           <div class="countdown-item"><div class="num" id="promo-hours">18</div><div class="lbl">Hours</div></div>
@@ -859,7 +2109,7 @@
         <div class="metric-card gold">
           <div class="metric-icon">💰</div>
           <div class="metric-label">Total Earnings</div>
-          <div class="metric-value gold" id="m-total">₱12,450</div>
+          <div class="metric-value" id="m-total">₱12,450</div>
           <div class="metric-sub"><span class="up">↑ +₱1,200</span> this month</div>
         </div>
         <div class="metric-card">
@@ -883,7 +2133,7 @@
         <div class="metric-card">
           <div class="metric-icon">🤝</div>
           <div class="metric-label">Pairing Income</div>
-          <div class="metric-value gold" id="m-pairing">₱4,800</div>
+          <div class="metric-value" id="m-pairing" style="color:var(--gano-gold);">₱4,800</div>
           <div class="metric-sub">Lifetime earned</div>
         </div>
         <div class="metric-card">
@@ -896,30 +2146,39 @@
 
       <div class="two-col">
         <div class="card">
-          <div class="card-header"><h3>📈 8-Level Earnings Projection</h3><span style="font-size:11px;color:var(--muted);">Full network potential</span></div>
+          <div class="card-header"><h3>📈 8-Level Earnings</h3><span style="font-size:11px;color:var(--text-secondary);">Full network potential</span></div>
           <div class="card-body">
-            <div class="level-progress" id="level-breakdown"></div>
+            <div class="level-progress" id="level-breakdown">
+              <div class="lp-row"><div class="lp-badge">1</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 1 (2 members)</span><span>₱50</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:100%;"></div></div></div><div class="lp-count">₱50</div></div>
+              <div class="lp-row"><div class="lp-badge">2</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 2 (4 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:80%;"></div></div></div><div class="lp-count">₱20</div></div>
+              <div class="lp-row"><div class="lp-badge">3</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 3 (8 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:60%;"></div></div></div><div class="lp-count">₱20</div></div>
+              <div class="lp-row"><div class="lp-badge">4</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 4 (16 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:50%;"></div></div></div><div class="lp-count">₱20</div></div>
+              <div class="lp-row"><div class="lp-badge">5</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 5 (32 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:40%;"></div></div></div><div class="lp-count">₱20</div></div>
+              <div class="lp-row"><div class="lp-badge">6</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 6 (64 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:30%;"></div></div></div><div class="lp-count">₱20</div></div>
+              <div class="lp-row"><div class="lp-badge">7</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 7 (128 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:20%;"></div></div></div><div class="lp-count">₱20</div></div>
+              <div class="lp-row" style="border-top:1px solid var(--border-color);padding-top:8px;"><div class="lp-badge" style="background:var(--gradient-gold);">8</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 8 (256 members)</span><span style="color:var(--gano-gold);">₱30</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:10%;background:linear-gradient(90deg,#D4AF37,#B8962E);"></div></div></div><div class="lp-count" style="color:var(--gano-gold);">₱30</div></div>
+            </div>
           </div>
         </div>
         <div class="card">
           <div class="card-header"><h3>💡 Income Breakdown</h3></div>
           <div class="card-body">
             <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg3);border-radius:6px;">
+              <div style="display:flex;justify-content:space-between;padding:10px 14px;background:var(--bg-card);border-radius:var(--radius-sm);border:1px solid var(--border-color);">
                 <span>Direct Referral (DR)</span>
-                <span style="color:var(--gold);font-weight:700;">₱4,800</span>
+                <span style="color:var(--gano-gold);font-weight:700;">₱4,800</span>
               </div>
-              <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg3);border-radius:6px;">
+              <div style="display:flex;justify-content:space-between;padding:10px 14px;background:var(--bg-card);border-radius:var(--radius-sm);border:1px solid var(--border-color);">
                 <span>Pairing Bonus</span>
-                <span style="color:var(--green-light);font-weight:700;">₱3,200</span>
+                <span style="color:var(--mint-green-light);font-weight:700;">₱3,200</span>
               </div>
-              <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg3);border-radius:6px;">
+              <div style="display:flex;justify-content:space-between;padding:10px 14px;background:var(--bg-card);border-radius:var(--radius-sm);border:1px solid var(--border-color);">
                 <span>Unilevel (L1-L8)</span>
                 <span style="color:#3498db;font-weight:700;">₱2,650</span>
               </div>
-              <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg3);border-radius:6px;border-top:1px solid var(--border);">
+              <div style="display:flex;justify-content:space-between;padding:10px 14px;background:var(--bg-card);border-radius:var(--radius-sm);border-top:2px solid var(--gano-gold);">
                 <span style="font-weight:700;">Total</span>
-                <span style="color:var(--gold);font-weight:800;font-size:18px;">₱10,650</span>
+                <span style="color:var(--gano-gold);font-weight:800;font-size:18px;">₱10,650</span>
               </div>
             </div>
           </div>
@@ -932,10 +2191,10 @@
           <table>
             <thead><tr><th>Date</th><th>Type</th><th>Level</th><th>Amount</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td>Jun 22, 2025</td><td><span class="badge badge-gold">Referral</span></td><td>L1</td><td style="color:var(--green-light);">+₱300</td><td><span class="badge badge-green">Paid</span></td></tr>
-              <tr><td>Jun 20, 2025</td><td><span class="badge badge-blue">Pairing</span></td><td>—</td><td style="color:var(--green-light);">+₱600</td><td><span class="badge badge-green">Paid</span></td></tr>
-              <tr><td>Jun 18, 2025</td><td><span class="badge badge-purple">Unilevel</span></td><td>L3</td><td style="color:var(--green-light);">+₱180</td><td><span class="badge badge-green">Paid</span></td></tr>
-              <tr><td>Jun 15, 2025</td><td><span class="badge badge-red">Withdrawal</span></td><td>—</td><td style="color:var(--red);">-₱2,000</td><td><span class="badge badge-blue">Completed</span></td></tr>
+              <tr><td>Jun 22, 2025</td><td><span class="badge badge-gold">Referral</span></td><td>L1</td><td style="color:var(--mint-green-light);">+₱300</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td>Jun 20, 2025</td><td><span class="badge badge-blue">Pairing</span></td><td>—</td><td style="color:var(--mint-green-light);">+₱600</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td>Jun 18, 2025</td><td><span class="badge badge-purple">Unilevel</span></td><td>L3</td><td style="color:var(--mint-green-light);">+₱180</td><td><span class="badge badge-green">Paid</span></td></tr>
+              <tr><td>Jun 15, 2025</td><td><span class="badge badge-red">Withdrawal</span></td><td>—</td><td style="color:#e74c3c;">-₱2,000</td><td><span class="badge badge-blue">Completed</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -945,7 +2204,7 @@
     <!-- EARNINGS -->
     <div class="page" id="page-earnings">
       <div class="metrics-grid">
-        <div class="metric-card gold"><div class="metric-icon">💰</div><div class="metric-label">Total Lifetime</div><div class="metric-value gold">₱12,450</div></div>
+        <div class="metric-card gold"><div class="metric-icon">💰</div><div class="metric-label">Total Lifetime</div><div class="metric-value">₱12,450</div></div>
         <div class="metric-card"><div class="metric-icon">🤝</div><div class="metric-label">Direct Referral</div><div class="metric-value">₱4,800</div></div>
         <div class="metric-card"><div class="metric-icon">🔀</div><div class="metric-label">Pairing Bonus</div><div class="metric-value green">₱3,200</div></div>
         <div class="metric-card"><div class="metric-icon">🌐</div><div class="metric-label">Unilevel (L1-L8)</div><div class="metric-value">₱2,650</div></div>
@@ -955,25 +2214,25 @@
         <div class="card-header"><h3>📊 8-Level Unilevel Breakdown</h3></div>
         <div class="card-body">
           <div class="level-progress">
-            <div class="lp-row"><div class="lp-badge">1</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>Level 1 (2 members)</span><span>₱50</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:100%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱50</div></div>
-            <div class="lp-row"><div class="lp-badge">2</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>Level 2 (4 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:80%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱20</div></div>
-            <div class="lp-row"><div class="lp-badge">3</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>Level 3 (8 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:60%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱20</div></div>
-            <div class="lp-row"><div class="lp-badge">4</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>Level 4 (16 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:50%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱20</div></div>
-            <div class="lp-row"><div class="lp-badge">5</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>Level 5 (32 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:40%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱20</div></div>
-            <div class="lp-row"><div class="lp-badge">6</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>Level 6 (64 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:30%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱20</div></div>
-            <div class="lp-row"><div class="lp-badge">7</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>Level 7 (128 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:20%;"></div></div></div><div class="lp-count" style="color:var(--gold);">₱20</div></div>
-            <div class="lp-row" style="border-top:1px solid var(--border);padding-top:8px;"><div class="lp-badge" style="background:var(--gold);">8</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);"><span>Level 8 (256 members)</span><span>₱30</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:10%;background:linear-gradient(90deg,#e67e22,#d35400);"></div></div></div><div class="lp-count" style="color:#e67e22;">₱30</div></div>
+            <div class="lp-row"><div class="lp-badge">1</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 1 (2 members)</span><span>₱50</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:100%;"></div></div></div><div class="lp-count">₱50</div></div>
+            <div class="lp-row"><div class="lp-badge">2</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 2 (4 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:80%;"></div></div></div><div class="lp-count">₱20</div></div>
+            <div class="lp-row"><div class="lp-badge">3</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 3 (8 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:60%;"></div></div></div><div class="lp-count">₱20</div></div>
+            <div class="lp-row"><div class="lp-badge">4</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 4 (16 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:50%;"></div></div></div><div class="lp-count">₱20</div></div>
+            <div class="lp-row"><div class="lp-badge">5</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 5 (32 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:40%;"></div></div></div><div class="lp-count">₱20</div></div>
+            <div class="lp-row"><div class="lp-badge">6</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 6 (64 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:30%;"></div></div></div><div class="lp-count">₱20</div></div>
+            <div class="lp-row"><div class="lp-badge">7</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 7 (128 members)</span><span>₱20</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:20%;"></div></div></div><div class="lp-count">₱20</div></div>
+            <div class="lp-row" style="border-top:1px solid var(--border-color);padding-top:8px;"><div class="lp-badge" style="background:var(--gradient-gold);">8</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>Level 8 (256 members)</span><span style="color:var(--gano-gold);">₱30</span></div><div class="lp-bar-wrap"><div class="lp-bar" style="width:10%;background:linear-gradient(90deg,#D4AF37,#B8962E);"></div></div></div><div class="lp-count" style="color:var(--gano-gold);">₱30</div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- COMPENSATION PAGE -->
+    <!-- COMPENSATION -->
     <div class="page" id="page-compensation">
       <div style="max-width:1100px; margin:0 auto;">
-        <div style="background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:24px;">
-          <h3 style="color:var(--gold); margin-bottom:8px;">📊 8-Level Unilevel Compensation Plan</h3>
-          <p style="color:var(--muted); font-size:13px;">Complete breakdown based on the official Gano Excel compensation structure</p>
+        <div style="background:var(--gradient-card); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:20px; margin-bottom:24px;">
+          <h3 style="color:var(--gano-gold); margin-bottom:8px;">📊 8-Level Unilevel Compensation</h3>
+          <p style="color:var(--text-secondary); font-size:13px;">Complete breakdown based on the official Gano iTouch compensation structure</p>
         </div>
 
         <div class="compensation-grid">
@@ -1049,22 +2308,22 @@
           <div class="comp-cell">₱20</div>
           <div class="comp-cell"><span class="total">₱2,560</span></div>
 
-          <div class="comp-row-header" style="background:rgba(200,151,58,0.15);"><span class="level" style="color:var(--gold);">L8</span></div>
-          <div class="comp-cell" style="background:rgba(200,151,58,0.05);"><span class="highlight">128</span></div>
-          <div class="comp-cell" style="background:rgba(200,151,58,0.05);"><span class="highlight">128</span></div>
-          <div class="comp-cell" style="background:rgba(200,151,58,0.05);"><span class="total">256</span></div>
-          <div class="comp-cell" style="background:rgba(200,151,58,0.05);">₱51,200</div>
-          <div class="comp-cell" style="background:rgba(200,151,58,0.05);">₱12,800</div>
-          <div class="comp-cell" style="background:rgba(200,151,58,0.05);">₱30</div>
-          <div class="comp-cell" style="background:rgba(200,151,58,0.05);"><span class="total">₱7,680</span></div>
+          <div class="comp-row-header" style="background:rgba(212,175,55,0.1);"><span class="level" style="color:var(--gano-gold);">L8</span></div>
+          <div class="comp-cell" style="background:rgba(212,175,55,0.03);"><span class="highlight">128</span></div>
+          <div class="comp-cell" style="background:rgba(212,175,55,0.03);"><span class="highlight">128</span></div>
+          <div class="comp-cell" style="background:rgba(212,175,55,0.03);"><span class="total">256</span></div>
+          <div class="comp-cell" style="background:rgba(212,175,55,0.03);">₱51,200</div>
+          <div class="comp-cell" style="background:rgba(212,175,55,0.03);">₱12,800</div>
+          <div class="comp-cell" style="background:rgba(212,175,55,0.03);">₱30</div>
+          <div class="comp-cell" style="background:rgba(212,175,55,0.03);"><span class="total">₱7,680</span></div>
         </div>
 
-        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; background:var(--bg3); border-radius:var(--radius); padding:16px; margin-top:12px;">
-          <div style="text-align:center;"><span style="color:var(--muted); font-size:11px;">Total DR</span><br><span style="color:var(--gold); font-weight:800; font-size:18px;">₱102,000</span></div>
-          <div style="text-align:center;"><span style="color:var(--muted); font-size:11px;">Total Pairing</span><br><span style="color:var(--gold); font-weight:800; font-size:18px;">₱25,500</span></div>
-          <div style="text-align:center;"><span style="color:var(--muted); font-size:11px;">Total Unilevel</span><br><span style="color:var(--gold); font-weight:800; font-size:18px;">₱12,820</span></div>
-          <div style="text-align:center;"><span style="color:var(--muted); font-size:11px;">Entry Package</span><br><span style="color:var(--gold); font-weight:800; font-size:18px;">₱3,888</span></div>
-          <div style="text-align:center;"><span style="color:var(--muted); font-size:11px;">Grand Total</span><br><span style="color:var(--green-light); font-weight:900; font-size:20px;">₱1,982,880</span></div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; background:var(--bg-card); border-radius:var(--radius-md); padding:16px; margin-top:12px; border:1px solid var(--border-color);">
+          <div style="text-align:center;"><span style="color:var(--text-muted); font-size:11px;">Total DR</span><br><span style="color:var(--gano-gold); font-weight:800; font-size:18px;">₱102,000</span></div>
+          <div style="text-align:center;"><span style="color:var(--text-muted); font-size:11px;">Total Pairing</span><br><span style="color:var(--gano-gold); font-weight:800; font-size:18px;">₱25,500</span></div>
+          <div style="text-align:center;"><span style="color:var(--text-muted); font-size:11px;">Total Unilevel</span><br><span style="color:var(--gano-gold); font-weight:800; font-size:18px;">₱12,820</span></div>
+          <div style="text-align:center;"><span style="color:var(--text-muted); font-size:11px;">Entry Package</span><br><span style="color:var(--gano-gold); font-weight:800; font-size:18px;">₱3,888</span></div>
+          <div style="text-align:center;"><span style="color:var(--text-muted); font-size:11px;">Grand Total</span><br><span style="color:var(--mint-green-light); font-weight:900; font-size:20px;">₱1,982,880</span></div>
         </div>
       </div>
     </div>
@@ -1075,27 +2334,80 @@
         <div class="metric-card"><div class="metric-label">L1 Direct</div><div class="metric-value">8</div></div>
         <div class="metric-card"><div class="metric-label">L2 Members</div><div class="metric-value">21</div></div>
         <div class="metric-card"><div class="metric-label">L3-L8</div><div class="metric-value">481</div></div>
-        <div class="metric-card gold"><div class="metric-label">Total Network</div><div class="metric-value gold">510</div></div>
+        <div class="metric-card gold"><div class="metric-label">Total Network</div><div class="metric-value">510</div></div>
       </div>
 
       <div class="card">
-        <div class="card-header"><h3>🌐 8-Level Network Tree</h3></div>
-        <div class="network-canvas" style="padding:20px; overflow-x:auto;">
-          <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
-            <div style="background:var(--bg3);border:2px solid var(--gold);border-radius:10px;padding:12px 24px;text-align:center;">
-              <div style="font-weight:800;color:var(--gold);">YOU</div>
-              <div style="font-size:11px;color:var(--muted);">GEI-204891</div>
+        <div class="card-header"><h3>🌐 Pyramid Network Structure</h3>
+          <div style="display:flex;gap:12px;font-size:10px;">
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;border:2px solid var(--gano-gold);border-radius:50%;display:inline-block;"></span> You</span>
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;border:2px solid #9b59b6;border-radius:50%;display:inline-block;"></span> Corporate</span>
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;border:2px dashed var(--border-color);border-radius:50%;display:inline-block;"></span> Empty</span>
+          </div>
+        </div>
+        <div class="card-body" style="overflow-x:auto;">
+          <div class="pyramid">
+            <div class="pyramid-level">
+              <div class="pyramid-node you">
+                <div class="node-avatar">👤</div>
+                <div class="node-label">YOU</div>
+                <div class="node-id">GIT-204891</div>
+              </div>
             </div>
-            <div style="height:20px;width:2px;background:var(--border);"></div>
-            <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;padding:8px;">
-              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;"><div style="font-weight:700;font-size:12px;">L1: 8</div><div style="font-size:10px;color:var(--muted);">Direct</div></div>
-              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;"><div style="font-weight:700;font-size:12px;">L2: 21</div><div style="font-size:10px;color:var(--muted);">Members</div></div>
-              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;"><div style="font-weight:700;font-size:12px;">L3: 34</div><div style="font-size:10px;color:var(--muted);">Members</div></div>
-              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;"><div style="font-weight:700;font-size:12px;">L4: 42</div><div style="font-size:10px;color:var(--muted);">Members</div></div>
-              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;"><div style="font-weight:700;font-size:12px;">L5: 28</div><div style="font-size:10px;color:var(--muted);">Members</div></div>
-              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;"><div style="font-weight:700;font-size:12px;">L6: 14</div><div style="font-size:10px;color:var(--muted);">Members</div></div>
-              <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;"><div style="font-weight:700;font-size:12px;">L7: 7</div><div style="font-size:10px;color:var(--muted);">Members</div></div>
-              <div style="background:var(--bg3);border:1px solid var(--gold-dark);border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;border-color:var(--gold);"><div style="font-weight:700;font-size:12px;color:var(--gold);">L8: 356</div><div style="font-size:10px;color:var(--muted);">Members</div></div>
+            <div class="pyramid-connector"><div class="v-line"></div></div>
+
+            <div class="pyramid-level">
+              <div class="pyramid-node">
+                <div class="node-avatar">👤</div>
+                <div class="node-label">M. Santos</div>
+                <div class="node-id">GIT-205001</div>
+                <div class="node-badge">⬅️</div>
+              </div>
+              <div class="pyramid-node corp-node">
+                <div class="node-avatar">🏢</div>
+                <div class="node-label">Corp Slot</div>
+                <div class="node-id">CRP-001</div>
+                <div class="node-badge">➡️</div>
+              </div>
+            </div>
+            <div class="pyramid-connector"><div class="v-line"></div></div>
+
+            <div class="pyramid-level">
+              <div class="pyramid-node"><div class="node-avatar">👤</div><div class="node-label">A. Garcia</div><div class="node-id">GIT-206010</div></div>
+              <div class="pyramid-node"><div class="node-avatar">👤</div><div class="node-label">B. Torres</div><div class="node-id">GIT-206025</div></div>
+              <div class="pyramid-node corp-node"><div class="node-avatar">🏢</div><div class="node-label">Corp Slot</div><div class="node-id">CRP-002</div></div>
+              <div class="pyramid-node"><div class="node-avatar">👤</div><div class="node-label">C. Bautista</div><div class="node-id">GIT-206040</div></div>
+            </div>
+            <div class="pyramid-connector"><div class="v-line"></div></div>
+
+            <div class="pyramid-level">
+              <div class="pyramid-node"><div class="node-avatar">👤</div><div class="node-label">D. Flores</div></div>
+              <div class="pyramid-node"><div class="node-avatar">👤</div><div class="node-label">E. Reyes</div></div>
+              <div class="pyramid-node"><div class="node-avatar">👤</div><div class="node-label">F. Cruz</div></div>
+              <div class="pyramid-node"><div class="node-avatar">👤</div><div class="node-label">G. Lim</div></div>
+              <div class="pyramid-node"><div class="node-avatar">👤</div><div class="node-label">H. Tan</div></div>
+              <div class="pyramid-node empty-node"><div class="node-avatar">❓</div><div class="node-label">Empty</div></div>
+              <div class="pyramid-node empty-node"><div class="node-avatar">❓</div><div class="node-label">Empty</div></div>
+              <div class="pyramid-node empty-node"><div class="node-avatar">❓</div><div class="node-label">Empty</div></div>
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;justify-content:center;">
+              <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:8px 14px;text-align:center;border:1px solid var(--border-color);">
+                <div style="font-weight:700;font-size:12px;color:var(--gano-gold);">L5: 32</div>
+                <div style="font-size:10px;color:var(--text-secondary);">Members</div>
+              </div>
+              <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:8px 14px;text-align:center;border:1px solid var(--border-color);">
+                <div style="font-weight:700;font-size:12px;color:var(--gano-gold);">L6: 64</div>
+                <div style="font-size:10px;color:var(--text-secondary);">Members</div>
+              </div>
+              <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:8px 14px;text-align:center;border:1px solid var(--border-color);">
+                <div style="font-weight:700;font-size:12px;color:var(--gano-gold);">L7: 128</div>
+                <div style="font-size:10px;color:var(--text-secondary);">Members</div>
+              </div>
+              <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:8px 14px;text-align:center;border:2px solid var(--gano-gold);">
+                <div style="font-weight:700;font-size:12px;color:var(--gano-gold);">L8: 256</div>
+                <div style="font-size:10px;color:var(--text-secondary);">Members</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1108,7 +2420,7 @@
         <div class="product-card">
           <div class="product-emoji">☕</div>
           <h3>3-in-1 Coffee</h3>
-          <p>Ganoderma-infused coffee blend.</p>
+          <p>Ganoderma-infused blend</p>
           <div class="price-row"><span class="lbl">DP:</span><span class="val">₱350</span></div>
           <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱450</span></div>
           <button class="btn btn-gold btn-sm btn-block" onclick="orderProduct('3-in-1 Coffee',350)">Order</button>
@@ -1116,7 +2428,7 @@
         <div class="product-card featured">
           <div class="product-emoji">🎁</div>
           <h3>Go Kit Starter</h3>
-          <p>Entry business kit + ID.</p>
+          <p>Entry kit + ID</p>
           <div class="price-row"><span class="lbl">DP:</span><span class="val">₱1,500</span></div>
           <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱2,000</span></div>
           <button class="btn btn-gold btn-sm btn-block" onclick="orderProduct('Go Kit Starter',1500)">Order</button>
@@ -1124,7 +2436,7 @@
         <div class="product-card">
           <div class="product-emoji">🍵</div>
           <h3>Black Coffee</h3>
-          <p>Sugar-free Ganoderma.</p>
+          <p>Sugar-free Ganoderma</p>
           <div class="price-row"><span class="lbl">DP:</span><span class="val">₱380</span></div>
           <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱480</span></div>
           <button class="btn btn-gold btn-sm btn-block" onclick="orderProduct('Black Coffee',380)">Order</button>
@@ -1132,7 +2444,7 @@
         <div class="product-card">
           <div class="product-emoji">🏆</div>
           <h3>Premium Package</h3>
-          <p>Full distributor kit.</p>
+          <p>Full distributor kit</p>
           <div class="price-row"><span class="lbl">DP:</span><span class="val">₱3,500</span></div>
           <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱4,500</span></div>
           <button class="btn btn-gold btn-sm btn-block" onclick="orderProduct('Premium Package',3500)">Order</button>
@@ -1140,7 +2452,7 @@
         <div class="product-card">
           <div class="product-emoji">🧪</div>
           <h3>Ganocafe Mocha</h3>
-          <p>Rich mocha flavor.</p>
+          <p>Rich mocha flavor</p>
           <div class="price-row"><span class="lbl">DP:</span><span class="val">₱360</span></div>
           <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱460</span></div>
           <button class="btn btn-gold btn-sm btn-block" onclick="orderProduct('Ganocafe Mocha',360)">Order</button>
@@ -1148,7 +2460,7 @@
         <div class="product-card">
           <div class="product-emoji">💊</div>
           <h3>Gano Capsules</h3>
-          <p>Pure Ganoderma extract.</p>
+          <p>Pure Ganoderma extract</p>
           <div class="price-row"><span class="lbl">DP:</span><span class="val">₱900</span></div>
           <div class="price-row"><span class="lbl">SRP:</span><span class="val srp">₱1,200</span></div>
           <button class="btn btn-gold btn-sm btn-block" onclick="orderProduct('Gano Capsules',900)">Order</button>
@@ -1159,7 +2471,7 @@
     <!-- PAYOUT -->
     <div class="page" id="page-payout">
       <div class="metrics-grid">
-        <div class="metric-card gold"><div class="metric-icon">💳</div><div class="metric-label">Available</div><div class="metric-value gold" id="pay-avail">₱3,250</div></div>
+        <div class="metric-card gold"><div class="metric-icon">💳</div><div class="metric-label">Available</div><div class="metric-value" id="pay-avail">₱3,250</div></div>
         <div class="metric-card"><div class="metric-icon">✅</div><div class="metric-label">Total Withdrawn</div><div class="metric-value green">₱9,200</div></div>
       </div>
 
@@ -1167,7 +2479,7 @@
         <div class="card">
           <div class="card-header"><h3>💸 Request Withdrawal</h3></div>
           <div class="card-body">
-            <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Min: <strong style="color:var(--gold);">₱200</strong> · Instant processing</p>
+            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">Min: <strong style="color:var(--gano-gold);">₱200</strong> · Instant processing</p>
             <div class="payout-channels" id="channel-selector">
               <div class="channel-card selected" onclick="selectChannel(this,'GCash')"><div class="c-icon">📱</div><div class="c-name">GCash</div></div>
               <div class="channel-card" onclick="selectChannel(this,'Maya')"><div class="c-icon">💜</div><div class="c-name">Maya</div></div>
@@ -1182,13 +2494,13 @@
           <div class="card-header"><h3>📊 Payout History</h3></div>
           <div class="card-body">
             <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="background:var(--bg3);border-radius:8px;padding:12px;border:1px solid var(--border);">
+              <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border-color);">
                 <div style="display:flex;justify-content:space-between;"><span style="font-weight:700;">₱2,000</span><span class="badge badge-blue">Completed</span></div>
-                <div style="font-size:11px;color:var(--muted);">GCash · Jun 15, 2025</div>
+                <div style="font-size:11px;color:var(--text-secondary);">GCash · Jun 15, 2025</div>
               </div>
-              <div style="background:var(--bg3);border-radius:8px;padding:12px;border:1px solid var(--border);">
+              <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border-color);">
                 <div style="display:flex;justify-content:space-between;"><span style="font-weight:700;">₱3,500</span><span class="badge badge-blue">Completed</span></div>
-                <div style="font-size:11px;color:var(--muted);">Maya · May 28, 2025</div>
+                <div style="font-size:11px;color:var(--text-secondary);">Maya · May 28, 2025</div>
               </div>
             </div>
           </div>
@@ -1202,13 +2514,13 @@
         <div class="card-header"><h3>🔗 Your Referral Link</h3></div>
         <div class="card-body">
           <div class="ref-link-box" id="ref-link-box">
-            <div class="link" id="ref-link-display">https://gei-platform.com/ref/GEI-204891</div>
+            <div class="link" id="ref-link-display">https://ganoitouch.com/ref/GIT-204891</div>
             <button class="copy-btn" onclick="copyRefLink()">📋 Copy</button>
           </div>
           <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn btn-outline btn-sm" onclick="showToast('Share on Facebook','info')">📘 Facebook</button>
-            <button class="btn btn-outline btn-sm" onclick="showToast('Share on Messenger','info')">💬 Messenger</button>
-            <button class="btn btn-outline btn-sm" onclick="showToast('Share on Viber','info')">📲 Viber</button>
+            <button class="btn btn-outline-gold btn-sm" onclick="showToast('Share on Facebook','info')">📘 Facebook</button>
+            <button class="btn btn-outline-gold btn-sm" onclick="showToast('Share on Messenger','info')">💬 Messenger</button>
+            <button class="btn btn-outline-gold btn-sm" onclick="showToast('Share on Viber','info')">📲 Viber</button>
           </div>
         </div>
       </div>
@@ -1216,7 +2528,7 @@
 
     <!-- ADMIN -->
     <div class="page" id="page-admin">
-      <div style="background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;color:#9b59b6;">
+      <div style="background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);border-radius:var(--radius-sm);padding:14px;margin-bottom:20px;font-size:13px;color:#9b59b6;">
         🏢 <strong>Admin Panel</strong> — System control
       </div>
       <div class="admin-tabs">
@@ -1229,7 +2541,7 @@
         <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
           <div class="metric-card"><div class="metric-label">Total</div><div class="metric-value">12,418</div></div>
           <div class="metric-card"><div class="metric-label">Active</div><div class="metric-value green">10,892</div></div>
-          <div class="metric-card"><div class="metric-label">New This Month</div><div class="metric-value gold">284</div></div>
+          <div class="metric-card"><div class="metric-label">New This Month</div><div class="metric-value" style="color:var(--gano-gold);">284</div></div>
           <div class="metric-card"><div class="metric-label">Corporate Slots</div><div class="metric-value" style="color:#9b59b6;">12</div></div>
         </div>
       </div>
@@ -1278,7 +2590,7 @@
           <div style="text-align:center;margin-bottom:20px;">
             <div class="user-avatar" style="width:64px;height:64px;font-size:24px;margin:0 auto 10px;" id="profile-avatar">J</div>
             <div style="font-size:18px;font-weight:800;" id="profile-name">Juan Dela Cruz</div>
-            <div style="color:var(--muted);font-size:13px;" id="profile-id">GEI-204891</div>
+            <div style="color:var(--text-secondary);font-size:13px;" id="profile-id">GIT-204891</div>
           </div>
           <div class="form-row">
             <div class="form-group"><label>First Name</label><input type="text" value="Juan"></div>
@@ -1293,6 +2605,42 @@
   </div>
 </div>
 
+<!-- ─── WITHDRAW MODAL ────────────────────────── -->
+<div class="modal-overlay" id="withdrawModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('withdrawModal')">×</button>
+    <h2>Withdraw Earnings 💸</h2>
+    <p class="sub">Available balance: <strong id="withdraw-balance" style="color:var(--gano-gold);">₱0</strong></p>
+    <div class="form-group">
+      <label>Payout Channel</label>
+      <div class="payout-channels" id="withdraw-channel-selector">
+        <div class="channel-card selected" onclick="selectChannel(this,'GCash')">
+          <div class="c-icon">📱</div>
+          <div class="c-name">GCash</div>
+        </div>
+        <div class="channel-card" onclick="selectChannel(this,'Maya')">
+          <div class="c-icon">💜</div>
+          <div class="c-name">Maya</div>
+        </div>
+        <div class="channel-card" onclick="selectChannel(this,'Bank')">
+          <div class="c-icon">🏦</div>
+          <div class="c-name">Bank</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label id="withdraw-acct-label">GCash Number</label>
+      <input type="text" id="withdraw-acct" placeholder="09XXXXXXXXX">
+    </div>
+    <div class="form-group">
+      <label>Amount (min ₱200)</label>
+      <input type="number" id="withdraw-amount" placeholder="₱200" min="200">
+    </div>
+    <button class="btn btn-green btn-block btn-lg" onclick="doWithdraw()">⚡ Process Payout</button>
+  </div>
+</div>
+
+<!-- ─── TOAST CONTAINER ────────────────────────── -->
 <div class="toast-container" id="toast-container"></div>
 
 <script>
@@ -1301,7 +2649,7 @@ const state = {
   isLoggedIn: false,
   user: {
     firstName: 'Juan', lastName: 'Dela Cruz',
-    id: 'GEI-204891',
+    id: 'GIT-204891',
     balance: 3250,
     totalEarnings: 12450,
     networkLevels: [8, 21, 34, 42, 28, 14, 7, 356]
@@ -1310,34 +2658,51 @@ const state = {
   orderCount: 3
 };
 
-// ─── 8-LEVEL COMP DATA ─────────────────────
-const levelData = [
-  { level: 1, left: 1, right: 1, total: 2, dr: 400, pairing: 100, unilevel: 50, totalPayout: 100 },
-  { level: 2, left: 2, right: 2, total: 4, dr: 800, pairing: 200, unilevel: 20, totalPayout: 80 },
-  { level: 3, left: 4, right: 4, total: 8, dr: 1600, pairing: 400, unilevel: 20, totalPayout: 160 },
-  { level: 4, left: 8, right: 8, total: 16, dr: 3200, pairing: 800, unilevel: 20, totalPayout: 320 },
-  { level: 5, left: 16, right: 16, total: 32, dr: 6400, pairing: 1600, unilevel: 20, totalPayout: 640 },
-  { level: 6, left: 32, right: 32, total: 64, dr: 12800, pairing: 3200, unilevel: 20, totalPayout: 1280 },
-  { level: 7, left: 64, right: 64, total: 128, dr: 25600, pairing: 6400, unilevel: 20, totalPayout: 2560 },
-  { level: 8, left: 128, right: 128, total: 256, dr: 51200, pairing: 12800, unilevel: 30, totalPayout: 7680 }
-];
-
 // ─── MODAL ──────────────────────────────────
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function switchModal(from, to) { closeModal(from); setTimeout(() => openModal(to), 200); }
 
 // ─── AUTH ──────────────────────────────────
-function doLogin() { closeModal('loginModal'); showApp(); }
+function doLogin() {
+  const id = document.getElementById('login-id').value;
+  if(id) state.user.id = id;
+  closeModal('loginModal'); 
+  showApp();
+}
+
 function doRegister() {
   const fn = document.getElementById('reg-fname').value || 'Juan';
   const ln = document.getElementById('reg-lname').value || 'Dela Cruz';
-  state.user.firstName = fn; state.user.lastName = ln;
-  state.user.id = 'GEI-' + (200000 + Math.floor(Math.random()*10000));
+  const sponsorName = document.getElementById('reg-sponsor-name').value || 'Unknown';
+  const sponsorId = document.getElementById('reg-sponsor-id').value || 'GIT-000000';
+  const activationCode = document.getElementById('reg-activation-code').value || '';
+  
+  if(activationCode.length < 8) {
+    showToast('Please enter a valid activation code', 'error');
+    return;
+  }
+  if(!sponsorName || !sponsorId) {
+    showToast('Please enter sponsor name and ID', 'error');
+    return;
+  }
+  
+  const pw = document.getElementById('reg-pw').value;
+  const pw2 = document.getElementById('reg-pw2').value;
+  if(pw && pw !== pw2) {
+    showToast('Passwords do not match', 'error');
+    return;
+  }
+  
+  state.user.firstName = fn; 
+  state.user.lastName = ln;
+  state.user.id = 'GIT-' + (200000 + Math.floor(Math.random()*10000));
+  
   closeModal('registerModal');
   showApp();
-  showToast('Welcome! Account activated. 🎉', 'success');
+  showToast(`Welcome ${fn}! Account activated with sponsor: ${sponsorName} 🎉`, 'success');
 }
+
 function doLogout() {
   document.getElementById('app').classList.remove('active');
   document.getElementById('app').style.display = 'none';
@@ -1368,7 +2733,8 @@ function updateSidebar() {
   document.getElementById('profile-id').textContent = u.id;
   document.getElementById('m-balance').textContent = '₱' + u.balance.toLocaleString();
   document.getElementById('pay-avail').textContent = '₱' + u.balance.toLocaleString();
-  document.getElementById('ref-link-display').textContent = 'https://gei-platform.com/ref/' + u.id;
+  document.getElementById('withdraw-balance').textContent = '₱' + u.balance.toLocaleString();
+  document.getElementById('ref-link-display').textContent = 'https://ganoitouch.com/ref/' + u.id;
 }
 
 function updateDashboard() {
@@ -1388,7 +2754,7 @@ function showPage(name, el) {
     dashboard: ['Dashboard', 'Your business overview'],
     earnings: ['Earnings', 'Track your 8-level income'],
     compensation: ['8-Level Compensation', 'Complete unilevel breakdown'],
-    network: ['My Network', '8-level network view'],
+    network: ['My Network', 'Pyramid network view'],
     products: ['Products', 'Order Ganoderma products'],
     payout: ['Payout', 'Withdraw your earnings'],
     referral: ['Referral Link', 'Share and grow your network'],
@@ -1415,12 +2781,29 @@ function closeSidebar() { document.getElementById('sidebar').classList.remove('o
 // ─── PAYOUT ─────────────────────────────────
 function selectChannel(el, name) {
   state.selectedChannel = name;
-  const parent = el.parentElement;
+  const parent = el.closest('.payout-channels') || el.parentElement;
   parent.querySelectorAll('.channel-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
+  
   const labels = { GCash: 'GCash Number', Maya: 'Maya Number', Bank: 'Bank Account Number' };
-  const lbl = document.getElementById('inline-acct-label');
-  if(lbl) lbl.textContent = labels[name];
+  ['inline-acct-label', 'withdraw-acct-label'].forEach(id => {
+    const lbl = document.getElementById(id);
+    if(lbl) lbl.textContent = labels[name];
+  });
+}
+
+function doWithdraw() {
+  const amount = parseFloat(document.getElementById('withdraw-amount').value);
+  const acct = document.getElementById('withdraw-acct').value;
+  if(!amount || amount < 200) { showToast('Minimum withdrawal is ₱200', 'error'); return; }
+  if(amount > state.user.balance) { showToast('Insufficient balance', 'error'); return; }
+  if(!acct) { showToast('Enter your account number', 'error'); return; }
+  state.user.balance -= amount;
+  updateSidebar();
+  showToast(`₱${amount.toLocaleString()} sent to ${state.selectedChannel}! ⚡`, 'success');
+  document.getElementById('withdraw-amount').value = '';
+  document.getElementById('withdraw-acct').value = '';
+  closeModal('withdrawModal');
 }
 
 function doInlineWithdraw() {
@@ -1475,6 +2858,11 @@ function startPromoCountdown() {
   }, 1000);
 }
 
+// ─── SCROLL ─────────────────────────────────
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}
+
 // ─── INIT ───────────────────────────────────
 startPromoCountdown();
 
@@ -1482,8 +2870,8 @@ startPromoCountdown();
 const urlParams = new URLSearchParams(window.location.search);
 const refId = urlParams.get('ref');
 if(refId) {
-  const sn = document.querySelector('.sponsor-box');
-  if(sn) sn.innerHTML = `🔗 Sponsor: <strong>Referral Partner</strong> &nbsp;|&nbsp; ID: <strong>${refId.toUpperCase()}</strong>`;
+  const sponsorIdInput = document.getElementById('reg-sponsor-id');
+  if(sponsorIdInput) sponsorIdInput.value = refId.toUpperCase();
 }
 </script>
 </body>
